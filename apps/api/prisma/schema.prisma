@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Mention {
+  id          String       @id @default(uuid())
+  platform    String       // "reddit" | "rss" | "search"
+  sourceName  String
+  externalId  String       @unique
+  title       String
+  content     String
+  url         String
+  author      String?
+  publishedAt DateTime?
+  fetchedAt   DateTime     @default(now())
+  raw         Json?
+  status      String       @default("new") // "new" | "reviewed" | "replied" | "ignored"
+  score       Int          @default(0)
+  relevant    Boolean      @default(false)
+  intent      String?
+  audience    String?
+  urgency     String?
+  reason      String?
+  language    String       @default("en") // "en" | "es"
+  digestedAt  DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  drafts      ReplyDraft[]
+
+  @@index([status])
+  @@index([relevant, score])
+  @@index([platform])
+  @@index([fetchedAt])
+  @@index([digestedAt])
+  @@index([language])
+}
+
+model ReplyDraft {
+  id        String   @id @default(uuid())
+  mentionId String
+  mention   Mention  @relation(fields: [mentionId], references: [id], onDelete: Cascade)
+  variant   String   // "concise" | "detailed" | "question_first"
+  text      String
+  createdAt DateTime @default(now())
+
+  @@index([mentionId])
+}
+
+model Source {
+  id        String   @id @default(uuid())
+  type      String   // "subreddit" | "reddit_query" | "rss_feed" | "search_query"
+  value     String
+  name      String?
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([type, value])
+}
+
+model Setting {
+  key   String @id
+  value String
+}
