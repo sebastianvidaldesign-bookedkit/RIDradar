@@ -85,6 +85,11 @@ async function processMentions(rawMentions: RawMention[]): Promise<ProcessResult
           urgency: classification.urgency,
           reason: classification.reason,
           language: classification.language ?? "en",
+          // RID Radar intelligence fields
+          classification: classification.ridClassification ?? null,
+          matchedTerms: classification.matchedTerms ?? undefined,
+          whyMatched: classification.whyMatched ?? null,
+          campaignIdea: classification.campaignIdea ?? null,
         },
       });
 

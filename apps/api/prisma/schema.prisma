@@ -28,6 +28,11 @@ model Mention {
   reason      String?
   language    String       @default("en") // "en" | "es"
   digestedAt  DateTime?
+  // RID Radar intelligence fields
+  classification String?  // "Wealth Context" | "High-Income Identity" | "Luxury Consumption" | "Aesthetic Affinity" | "Platform Discovery" | "Gatekeeper"
+  matchedTerms   Json?    // string[] — pack terms that triggered this match
+  whyMatched     String?  // human-readable explanation
+  campaignIdea   String?  // heuristic campaign suggestion
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   drafts      ReplyDraft[]
@@ -38,6 +43,7 @@ model Mention {
   @@index([fetchedAt])
   @@index([digestedAt])
   @@index([language])
+  @@index([classification])
 }
 
 model ReplyDraft {
@@ -53,14 +59,16 @@ model ReplyDraft {
 
 model Source {
   id        String   @id @default(uuid())
-  type      String   // "subreddit" | "reddit_query" | "rss_feed" | "search_query"
+  type      String   // "subreddit" | "reddit_query" | "rss_feed" | "search_query" | "x_query"
   value     String
   name      String?
+  pack      String?  // references QueryPack.id from brand.ts
   enabled   Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([type, value])
+  @@index([pack])
 }
 
 model Setting {

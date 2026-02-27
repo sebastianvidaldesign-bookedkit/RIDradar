@@ -1,4 +1,5 @@
 export type Platform = "reddit" | "rss" | "search" | "x";
+export type { RIDClassification } from "./brand";
 export type MentionStatus = "new" | "reviewed" | "replied" | "ignored";
 export type Intent = "need_help" | "recommendation_request" | "comparison" | "sharing_resource" | "other";
 export type Audience = "dj" | "producer" | "band" | "singer" | "manager" | "venue" | "unknown";
@@ -14,6 +15,11 @@ export interface Classification {
   score: number;
   reason: string;
   language?: string;
+  // RID Radar extended fields
+  ridClassification?: string;
+  matchedTerms?: string[];
+  whyMatched?: string;
+  campaignIdea?: string;
 }
 
 export interface RawMention {

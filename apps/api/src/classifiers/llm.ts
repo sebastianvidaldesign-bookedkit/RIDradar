@@ -3,31 +3,27 @@ import { logger } from "../lib/logger";
 import type { Classification } from "shared";
 import { detectLanguage } from "../lib/language";
 
-const SYSTEM_PROMPT = `You are a classification engine for BookedKit Radar, a tool that finds people talking about EPKs (electronic press kits) in music contexts.
+const SYSTEM_PROMPT = `You are a classification engine for RID Radar, a signal intelligence tool that finds status ecosystem signals for Romance Is Dead NYC — a luxury/dark-fashion brand.
 
 Given a mention (title + content + source), output a JSON object with these exact fields:
 {
-  "relevant": boolean,       // true if this is about music EPKs/press kits with potential buyer intent
+  "relevant": boolean,       // true if this signal touches luxury, status, high-income identity, or gatekeeper ecosystems
   "intent": string,          // one of: "need_help", "recommendation_request", "comparison", "sharing_resource", "other"
-  "audience": string,        // one of: "dj", "producer", "band", "singer", "manager", "venue", "unknown"
+  "audience": string,        // one of: "stylist", "founder", "finance", "art_collector", "creative_director", "private_club", "unknown"
   "urgency": string,         // one of: "high", "medium", "low"
-  "score": number,           // 0-100, how relevant and actionable this is for a music EPK product
+  "score": number,           // 0-100, how actionable this signal is for RID brand strategy
   "reason": string           // brief explanation (1 sentence)
 }
 
 Rules:
-- REJECT corporate/brand press kits, PR/press releases, product launches, fashion/beauty press kits
-- PRIORITIZE music booking context: venue, promoter, booking, gig, show, tour, SoundCloud, Spotify, Bandcamp
-- "need_help" = asking how to create/improve an EPK
-- "recommendation_request" = asking for tool/service recommendations
-- "comparison" = comparing EPK tools or approaches
-- "sharing_resource" = sharing their own EPK or a tool they found
-- High urgency = explicit deadline, venue/promoter request, or clear immediate need
-- Score 80+ = strong buyer intent in music context
-- Score 50-79 = moderate relevance
-- Score < 50 = weak or non-music context
+- REJECT: cheap, dupe, replica, fast fashion, budget, discount, clearance, dropshipping, side hustle, passive income, free webinar, how to get rich
+- PRIORITIZE: bespoke, atelier, couture, private members clubs, gala, invite-only, gatekeepers (stylists, PR), VC/founder operator language, editorial/avant-garde fashion
+- Score 80+ = direct gatekeeper or exclusive ecosystem signal
+- Score 50-79 = adjacent luxury or status signal
+- Score < 50 = weak or noisy signal
+- NYC context (Manhattan, SoHo, Tribeca, etc.) adds relevance weight
 
-BILINGUAL: Content may be in English OR Spanish (including Argentine/LATAM Spanish).
+REJECT if content matches spam patterns: courses, webinars, MLM, get-rich schemes.
 Recognize these Spanish EPK terms as equivalent to English ones:
 - "kit de prensa" / "kit de prensa electrónico" = electronic press kit
 - "dossier artístico" = artist dossier / EPK

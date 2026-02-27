@@ -36,7 +36,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight">BookedKit Radar</h1>
+          <h1 className="text-2xl font-bold tracking-tight">RID Radar</h1>
           <p className="mt-1 text-sm text-muted-foreground">Sign in to continue</p>
         </div>
 
@@ -53,7 +53,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              placeholder="you@bookedkit.com"
+              placeholder="you@example.com"
             />
           </div>
 

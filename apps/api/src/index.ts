@@ -29,7 +29,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.listen(config.port, async () => {
-  logger.info(`BookedKit Radar API running on http://localhost:${config.port}`);
+  logger.info(`RID Radar API running on http://localhost:${config.port}`);
   logger.info(`LLM: ${config.llmEnabled ? `enabled (${config.llmModel})` : "disabled (heuristic mode)"}`);
 
   // STEP 2: Test database connectivity at startup

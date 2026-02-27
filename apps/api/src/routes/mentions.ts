@@ -16,6 +16,7 @@ mentionsRouter.get("/", async (req, res) => {
       scoreMin,
       scoreMax,
       intent,
+      classification,
       dateFrom,
       dateTo,
       publishedAfter,
@@ -38,6 +39,7 @@ mentionsRouter.get("/", async (req, res) => {
     if (platform && platform !== "all") where.platform = platform as string;
     if (language && language !== "all") where.language = language as string;
     if (intent && intent !== "all") where.intent = intent as string;
+    if (classification && classification !== "all") where.classification = classification as string;
     if (relevant === "true") where.relevant = true;
     if (relevant === "false") where.relevant = false;
 

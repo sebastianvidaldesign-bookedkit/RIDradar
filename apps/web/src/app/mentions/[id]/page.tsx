@@ -36,6 +36,11 @@ interface MentionDetail {
   reason: string | null;
   digestedAt: string | null;
   drafts: ReplyDraft[];
+  // RID fields
+  classification: string | null;
+  matchedTerms: string[] | null;
+  whyMatched: string | null;
+  campaignIdea: string | null;
 }
 
 const variantLabel: Record<string, string> = {
@@ -257,29 +262,43 @@ export default function MentionDetailPage({ params }: { params: { id: string } }
                     {mention.score}/100
                   </dd>
                 </div>
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Relevant</dt>
-                  <dd>{mention.relevant ? "Yes" : "No"}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Intent</dt>
-                  <dd>{mention.intent?.replace(/_/g, " ") || "—"}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Audience</dt>
-                  <dd>{mention.audience || "—"}</dd>
-                </div>
+                {mention.classification && (
+                  <div className="flex justify-between">
+                    <dt className="text-muted-foreground">RID Category</dt>
+                    <dd><Badge variant="outline">{mention.classification}</Badge></dd>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">Urgency</dt>
                   <dd className={mention.urgency === "high" ? "text-red-600 font-semibold" : ""}>
                     {mention.urgency || "—"}
                   </dd>
                 </div>
-                {mention.reason && (
+                {mention.whyMatched && (
                   <div>
-                    <dt className="text-muted-foreground mb-1">Reason</dt>
-                    <dd className="text-xs text-muted-foreground bg-muted p-2 rounded">
-                      {mention.reason}
+                    <dt className="text-muted-foreground mb-1">Why Matched</dt>
+                    <dd className="text-xs text-muted-foreground bg-muted p-2 rounded leading-relaxed">
+                      {mention.whyMatched}
+                    </dd>
+                  </div>
+                )}
+                {mention.matchedTerms && mention.matchedTerms.length > 0 && (
+                  <div>
+                    <dt className="text-muted-foreground mb-1">Matched Terms</dt>
+                    <dd className="flex flex-wrap gap-1">
+                      {mention.matchedTerms.map((t) => (
+                        <Badge key={t} variant="secondary" className="text-xs">
+                          {t}
+                        </Badge>
+                      ))}
+                    </dd>
+                  </div>
+                )}
+                {mention.campaignIdea && (
+                  <div>
+                    <dt className="text-muted-foreground mb-1">Campaign Idea</dt>
+                    <dd className="text-xs text-muted-foreground border border-border rounded p-2 leading-relaxed">
+                      {mention.campaignIdea}
                     </dd>
                   </div>
                 )}

@@ -4,13 +4,13 @@ services:
     environment:
       POSTGRES_USER: radar
       POSTGRES_PASSWORD: radar_dev
-      POSTGRES_DB: bookedkit_radar
+      POSTGRES_DB: rid_radar
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - rid_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U radar -d bookedkit_radar"]
+      test: ["CMD-SHELL", "pg_isready -U radar -d rid_radar"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -21,10 +21,10 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@local.dev
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "5050:80"
+      - "5051:80"
     depends_on:
       postgres:
         condition: service_healthy
 
 volumes:
-  pgdata:
+  rid_pgdata:

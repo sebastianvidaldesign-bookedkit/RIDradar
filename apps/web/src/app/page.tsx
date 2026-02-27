@@ -27,6 +27,10 @@ interface MentionSummary {
   language: string;
   fetchedAt: string;
   drafts: { id: string; variant: string }[];
+  // RID fields
+  classification: string | null;
+  whyMatched: string | null;
+  campaignIdea: string | null;
 }
 
 interface MentionsResponse {
@@ -60,6 +64,7 @@ export default function InboxPage() {
   const [platform, setPlatform] = useState("all");
   const [language, setLanguage] = useState("all");
   const [intent, setIntent] = useState("all");
+  const [classification, setClassification] = useState("all");
   const [page, setPage] = useState(0);
   const [runningJob, setRunningJob] = useState<string | null>(null);
   const [jobMessage, setJobMessage] = useState<string | null>(null);
@@ -82,6 +87,7 @@ export default function InboxPage() {
   if (platform !== "all") params.set("platform", platform);
   if (language !== "all") params.set("language", language);
   if (intent !== "all") params.set("intent", intent);
+  if (classification !== "all") params.set("classification", classification);
   params.set("limit", String(limit));
   params.set("offset", String(page * limit));
 
@@ -211,6 +217,20 @@ export default function InboxPage() {
           <option value="other">Other</option>
         </Select>
 
+        <Select
+          value={classification}
+          onChange={(e) => { setClassification(e.target.value); setPage(0); }}
+          className="w-52"
+        >
+          <option value="all">All Classifications</option>
+          <option value="Wealth Context">Wealth Context</option>
+          <option value="High-Income Identity">High-Income Identity</option>
+          <option value="Luxury Consumption">Luxury Consumption</option>
+          <option value="Aesthetic Affinity">Aesthetic Affinity</option>
+          <option value="Platform Discovery">Platform Discovery</option>
+          <option value="Gatekeeper">Gatekeeper</option>
+        </Select>
+
         <Button variant="ghost" size="sm" onClick={() => mutate()}>
           Refresh
         </Button>
@@ -256,14 +276,11 @@ export default function InboxPage() {
                   <div className="flex flex-wrap items-center gap-2 mb-1">
                     <PlatformIcon platform={m.platform} showLabel />
                     <span className="text-xs text-muted-foreground">{m.sourceName}</span>
+                    {m.classification && (
+                      <Badge variant="outline">{m.classification}</Badge>
+                    )}
                     {m.urgency && m.urgency !== "low" && (
                       <Badge variant={urgencyColor(m.urgency)}>{m.urgency}</Badge>
-                    )}
-                    {m.intent && m.intent !== "other" && (
-                      <Badge variant="outline">{m.intent.replace(/_/g, " ")}</Badge>
-                    )}
-                    {m.audience && m.audience !== "unknown" && (
-                      <Badge variant="info">{m.audience}</Badge>
                     )}
                     {m.drafts.length > 0 && (
                       <Badge variant="success">{m.drafts.length} drafts</Badge>
@@ -273,9 +290,20 @@ export default function InboxPage() {
                   <h3 className="font-medium leading-snug line-clamp-1">
                     {m.title || "(no title)"}
                   </h3>
-                  <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                    {m.content.slice(0, 200)}
-                  </p>
+                  {m.whyMatched ? (
+                    <p className="mt-1 text-xs italic text-muted-foreground line-clamp-1">
+                      {m.whyMatched}
+                    </p>
+                  ) : (
+                    <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                      {m.content.slice(0, 200)}
+                    </p>
+                  )}
+                  {m.campaignIdea && (
+                    <div className="mt-2 rounded border border-border bg-muted/40 px-2 py-1 text-xs text-muted-foreground line-clamp-1">
+                      {m.campaignIdea}
+                    </div>
+                  )}
                 </div>
 
                 {/* Date + Archive */}

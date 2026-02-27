@@ -1,6 +1,7 @@
 import { config } from "../config";
 import { logger } from "../lib/logger";
 import { classifyHeuristic } from "./heuristic";
+import { classifyRidHeuristic } from "./rid-heuristic";
 import { classifyLlm } from "./llm";
 import type { Classification } from "shared";
 
@@ -20,7 +21,14 @@ export async function classify(
     }
   }
 
-  // Fallback: heuristic classifier
+  // Route heuristic by brand
+  if (config.radarBrand === "rid") {
+    const result = classifyRidHeuristic(title, content);
+    logger.debug(`RID heuristic classified "${title.slice(0, 50)}": score=${result.score}`);
+    return result;
+  }
+
+  // Default: EPK/BookedKit heuristic
   const result = classifyHeuristic(title, content);
   logger.debug(`Heuristic classified "${title.slice(0, 50)}": score=${result.score}`);
   return result;

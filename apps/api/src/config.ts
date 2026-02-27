@@ -26,7 +26,8 @@ if (rawDbUrl) {
 
 export const config = {
   port: parseInt(process.env.PORT || process.env.API_PORT || "3001", 10),
-  databaseUrl: process.env.DATABASE_URL || "postgresql://radar:radar_dev@localhost:5432/bookedkit_radar",
+  radarBrand: process.env.RADAR_BRAND || "rid",
+  databaseUrl: process.env.DATABASE_URL || "postgresql://radar:radar_dev@localhost:5433/rid_radar",
 
   // LLM
   llmBaseUrl: process.env.LLM_BASE_URL || "https://api.openai.com/v1",
@@ -60,7 +61,7 @@ export const config = {
   // Email
   emailProvider: process.env.EMAIL_PROVIDER || "auto",
   digestToEmail: process.env.DIGEST_TO_EMAIL || "",
-  digestFromEmail: process.env.DIGEST_FROM_EMAIL || "radar@bookedkit.com",
+  digestFromEmail: process.env.DIGEST_FROM_EMAIL || "radar@rid-radar.app",
   digestTimezone: process.env.DIGEST_TIMEZONE || "America/New_York",
   publicWebBaseUrl: process.env.PUBLIC_WEB_BASE_URL || "http://localhost:3000",
 
