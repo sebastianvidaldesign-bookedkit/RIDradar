@@ -12,6 +12,9 @@ COPY apps/api/ ./apps/api/
 # Install all deps (workspace resolution requires root-level install)
 RUN pnpm install --frozen-lockfile
 
+# Build shared package first (API imports runtime constants from it)
+RUN pnpm --filter shared build
+
 # Generate Prisma client BEFORE tsc (types must exist before compilation)
 RUN cd apps/api && npx prisma generate
 

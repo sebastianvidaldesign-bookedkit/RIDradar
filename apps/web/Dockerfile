@@ -12,6 +12,9 @@ COPY apps/web/ ./apps/web/
 # Install all deps (workspace resolution requires root-level install)
 RUN pnpm install --frozen-lockfile
 
+# Build shared package first
+RUN pnpm --filter shared build
+
 # Build arg for Next.js public API URL (must be baked in at build time)
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
