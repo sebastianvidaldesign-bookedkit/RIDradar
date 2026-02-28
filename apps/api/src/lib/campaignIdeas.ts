@@ -13,6 +13,8 @@ export const CAMPAIGN_IDEAS: Record<RIDClassification, string> = {
     "Build a campaign segment around this persona and operator language.",
   "Aesthetic Affinity":
     "Pull this reference into the next creative brief or mood board.",
+  "Job Opportunity":
+    "Evaluate for hiring, collaboration, or brand partnership potential.",
 };
 
 export function getCampaignIdea(classification: RIDClassification): string {
