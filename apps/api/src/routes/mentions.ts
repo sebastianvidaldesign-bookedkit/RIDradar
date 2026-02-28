@@ -61,6 +61,8 @@ mentionsRouter.get("/", async (req, res) => {
     }
 
     const sortMap: Record<string, Prisma.MentionOrderByWithRelationInput> = {
+      buyer_intent_high: { buyerIntentScore: "desc" },
+      buyer_intent_low: { buyerIntentScore: "asc" },
       score_high: { score: "desc" },
       score_low: { score: "asc" },
       newest: { fetchedAt: "desc" },

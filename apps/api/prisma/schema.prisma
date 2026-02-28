@@ -29,10 +29,11 @@ model Mention {
   language    String       @default("en") // "en" | "es"
   digestedAt  DateTime?
   // RID Radar intelligence fields
-  classification String?  // "Wealth Context" | "High-Income Identity" | "Luxury Consumption" | "Aesthetic Affinity" | "Platform Discovery" | "Gatekeeper"
-  matchedTerms   Json?    // string[] — pack terms that triggered this match
-  whyMatched     String?  // human-readable explanation
-  campaignIdea   String?  // heuristic campaign suggestion
+  classification   String?  // "Wealth Context" | "High-Income Identity" | "Luxury Consumption" | "Aesthetic Affinity" | "Platform Discovery" | "Gatekeeper"
+  matchedTerms     Json?    // string[] — pack terms that triggered this match
+  whyMatched       String?  // human-readable explanation
+  campaignIdea     String?  // heuristic campaign suggestion
+  buyerIntentScore Int?     // 0–100 composite buyer-intent score
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   drafts      ReplyDraft[]

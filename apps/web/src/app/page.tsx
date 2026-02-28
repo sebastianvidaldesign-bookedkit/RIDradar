@@ -31,6 +31,7 @@ interface MentionSummary {
   classification: string | null;
   whyMatched: string | null;
   campaignIdea: string | null;
+  buyerIntentScore: number | null;
 }
 
 interface MentionsResponse {
@@ -60,7 +61,7 @@ const scoreColor = (s: number) => {
 };
 
 export default function InboxPage() {
-  const [sort, setSort] = useState("score_high");
+  const [sort, setSort] = useState("buyer_intent_high");
   const [platform, setPlatform] = useState("all");
   const [language, setLanguage] = useState("all");
   const [intent, setIntent] = useState("all");
@@ -174,12 +175,13 @@ export default function InboxPage() {
         <Select
           value={sort}
           onChange={(e) => { setSort(e.target.value); setPage(0); }}
-          className="w-44"
+          className="w-52"
         >
-          <option value="score_high">Best Score First</option>
+          <option value="buyer_intent_high">Buyer Intent (High)</option>
+          <option value="score_high">Match Score (High)</option>
           <option value="newest">Newest First</option>
           <option value="oldest">Oldest First</option>
-          <option value="score_low">Lowest Score First</option>
+          <option value="score_low">Match Score (Low)</option>
         </Select>
 
         <Select
@@ -278,6 +280,11 @@ export default function InboxPage() {
                     <span className="text-xs text-muted-foreground">{m.sourceName}</span>
                     {m.classification && (
                       <Badge variant="outline">{m.classification}</Badge>
+                    )}
+                    {m.buyerIntentScore != null && m.buyerIntentScore > 0 && (
+                      <Badge variant="secondary" className="font-mono text-xs">
+                        Intent {m.buyerIntentScore}
+                      </Badge>
                     )}
                     {m.urgency && m.urgency !== "low" && (
                       <Badge variant={urgencyColor(m.urgency)}>{m.urgency}</Badge>

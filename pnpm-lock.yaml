@@ -29,6 +29,9 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.22.1
+      jiti:
+        specifier: ^2.6.1
+        version: 2.6.1
       node-cron:
         specifier: ^3.0.3
         version: 3.0.3
