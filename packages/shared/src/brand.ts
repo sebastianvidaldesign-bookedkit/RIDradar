@@ -4,7 +4,8 @@ export type RIDClassification =
   | "Luxury Consumption"
   | "Aesthetic Affinity"
   | "Platform Discovery"
-  | "Gatekeeper";
+  | "Gatekeeper"
+  | "Job Opportunity";
 
 export interface QueryPack {
   id: string;
@@ -87,6 +88,9 @@ export const QUERY_PACKS: QueryPack[] = [
       "tired of gucci what next", "alternative to balenciaga menswear",
       "luxury without logos brand", "anti logo luxury menswear",
       "unique luxury fashion brand", "statement menswear designer",
+      // 2025 trend language + direct competitors
+      "dark romance", "heliot emil", "post archive faction", "julius",
+      "ann demeulemeester", "dark aesthetic",
     ],
   },
   {
@@ -109,6 +113,23 @@ export const QUERY_PACKS: QueryPack[] = [
       "fashion editor", "publicist", "brand strategist", "luxury consultant",
       "image consultant", "private shopper", "fashion director", "styling house",
       "editorial stylist", "costume designer", "brand ambassador",
+      // Editorial publications as gatekeepers
+      "highsnobiety", "032c", "dazed", "another magazine",
+    ],
+  },
+  {
+    id: "job-opportunities",
+    name: "Job Opportunities",
+    classification: "Job Opportunity",
+    precision: false,
+    terms: [
+      "fashion stylist", "wardrobe stylist", "styling job", "stylist position",
+      "fashion brand director", "creative director fashion brand", "handbag designer",
+      "leather goods designer", "accessories designer", "luxury brand director",
+      "fashion designer job", "menswear designer job", "ready to wear designer",
+      "brand manager fashion", "fashion PR job", "fashion communications",
+      "dark fashion brand hiring", "avant garde brand open position",
+      "independent fashion brand job NYC", "luxury menswear brand hiring",
     ],
   },
 ];
@@ -118,6 +139,7 @@ export const BUYER_INTENT_TERMS: string[] = [
   "recommend", "looking for", "where to buy", "what should i wear",
   "any suggestions", "worth it", "best brand", "price range",
   "investment piece", "custom made", "tailoring", "fit", "quality",
+  "any recommendations", "which brand", "looking to buy", "where can i find",
 ];
 
 export const NEGATIVE_KEYWORDS: string[] = [
@@ -149,4 +171,5 @@ export const CLASSIFICATION_THRESHOLDS: Record<RIDClassification, number> = {
   "High-Income Identity": 35,
   "Luxury Consumption": 35,
   "Aesthetic Affinity": 35,
+  "Job Opportunity": 20,     // Low bar — all relevant jobs matter
 };

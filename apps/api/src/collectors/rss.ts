@@ -8,7 +8,7 @@ import crypto from "crypto";
 
 const parser = new RssParser({
   timeout: 15000,
-  headers: { "User-Agent": "BookedKitRadar/1.0" },
+  headers: { "User-Agent": "RIDRadar/1.0" },
 });
 
 function hashId(input: string): string {

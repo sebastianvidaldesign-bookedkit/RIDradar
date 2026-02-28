@@ -12,54 +12,70 @@ import {
 const prisma = new PrismaClient();
 
 // ─── REDDIT SUBREDDITS ────────────────────────────────────────────────────────
-// No API key needed. Fetches /new.json (last 50 posts) per subreddit.
-// These communities surface real purchase intent: "where can I find X", recommendations, outfit help.
+// High-signal subs only: people transacting in dark/avant-garde fashion
 const SUBREDDITS = [
-  "malefashionadvice",     // largest men's fashion advice community, tons of "looking for X" posts
-  "streetwear",            // streetwear community, dark/avant-garde aesthetic is core
-  "avantgardefashion",     // directly aligned — avant-garde and editorial fashion
-  "femalefashionadvice",   // women looking for brand recommendations
-  "findfashion",           // people asking "where can I find this look?"
-  "fashionadvice",         // general fashion advice seekers
-  "NYCfashion",            // NYC fashion community, geo-aligned
-  "alternativefashion",    // alternative aesthetic buyers
+  "avantgardefashion",  // directly aligned — avant-garde and editorial fashion
+  "Grailed",            // people buying/selling Rick Owens, Maison Margiela, CDG
+  "streetwear",         // dark/avant-garde aesthetic is core
 ];
 
 // ─── REDDIT SEARCH QUERIES ────────────────────────────────────────────────────
-// Searches Reddit posts + comments for specific buyer conversations.
-// Finds threads like "I'm tired of Gucci, what's next?" or "recommend dark luxury brand"
 const REDDIT_QUERIES = [
   "romance is dead fashion",
   "dark luxury fashion brand",
   "alternative to rick owens",
   "avant garde clothing brand recommend",
   "dark aesthetic fashion brand",
-  "punk luxury fashion brand",
-  "unique luxury brand NYC",
-  "underground fashion brand NYC",
-  "non mainstream designer menswear",
-  "maison margiela alternative brand",
+];
+
+// ─── X / TWITTER QUERIES ──────────────────────────────────────────────────────
+// Real-time buyer intent + NYC event discourse
+const X_QUERIES = [
+  "dark fashion brand recommend -is:retweet lang:en",
+  '"looking for brand like rick owens" -is:retweet',
+  '"romance is dead nyc" -is:retweet',
+  '"alternative to maison margiela" -is:retweet',
+  "avant garde fashion brand nyc -is:retweet lang:en",
+  "dark aesthetic outfit nyc -is:retweet lang:en",
+  "non mainstream luxury brand -is:retweet lang:en",
+];
+
+// ─── RSS FEEDS ────────────────────────────────────────────────────────────────
+// Editorial publications covering dark fashion → press placement opportunities
+const RSS_FEEDS: { url: string; name: string }[] = [
+  { url: "https://www.highsnobiety.com/feed/", name: "Highsnobiety" },
+  { url: "https://hypebeast.com/feed", name: "Hypebeast" },
+  { url: "https://www.dazeddigital.com/rss", name: "Dazed Digital" },
+  { url: "https://www.anothermag.com/rss", name: "AnOther Magazine" },
+  { url: "https://032c.com/feed", name: "032c" },
+  { url: "https://www.thecut.com/rss/feed.xml", name: "The Cut" },
 ];
 
 // ─── GOOGLE CSE WEB QUERIES ───────────────────────────────────────────────────
-// 100 free queries/day. Scoped to reddit.com for forum conversations.
-// These supplement Reddit's own search with Google's better relevance ranking.
+// 100 free queries/day. Scoped to Grailed + Reddit for community signals,
+// plus open-web queries and job opportunity searches.
 const SEARCH_QUERIES = [
+  // Brand / buyer intent — Grailed community
+  "site:grailed.com rick owens avant garde",
+  "site:grailed.com maison margiela dark fashion",
+  "site:grailed.com comme des garcons alternative",
+  // Brand / buyer intent — Reddit (Google-ranked best posts)
   "site:reddit.com dark luxury fashion brand recommend",
   "site:reddit.com alternative rick owens menswear",
-  "site:reddit.com avant garde clothing brand buy",
   "site:reddit.com romance is dead nyc",
   "site:reddit.com dark aesthetic clothing brand",
   "site:reddit.com punk luxury fashion",
-  "site:reddit.com non traditional black tie outfit brand",
-  "site:reddit.com tired of gucci what brand",
-  "site:reddit.com anti logo luxury fashion",
-  "site:reddit.com dark menswear brand recommendation",
+  // Open web — brand discovery
   "romance is dead nyc fashion brand review",
-  "dark luxury menswear brand independent NYC",
-  "avant garde fashion brand underground NYC",
-  "punk couture NYC brand 2025 2026",
-  "best dark aesthetic clothing brand",
+  "dark luxury menswear brand NYC independent 2025",
+  "avant garde fashion brand NYC editorial",
+  "dark romance menswear brand recommendation 2025",
+  // Job opportunities
+  "fashion stylist job NYC 2025",
+  "handbag designer job NYC luxury brand",
+  "luxury fashion brand director job NYC",
+  "dark fashion brand creative director open position",
+  "wardrobe stylist job NYC independent brand",
 ];
 
 async function main() {
@@ -102,6 +118,40 @@ async function main() {
     redditQueryCount++;
   }
 
+  let xQueryCount = 0;
+  for (const query of X_QUERIES) {
+    activeValues.add(query);
+    await prisma.source.upsert({
+      where: { type_value: { type: "x_query", value: query } },
+      update: { enabled: true, name: `x:"${query}"` },
+      create: {
+        type: "x_query",
+        value: query,
+        name: `x:"${query}"`,
+        pack: "social",
+        enabled: true,
+      },
+    });
+    xQueryCount++;
+  }
+
+  let rssFeedCount = 0;
+  for (const feed of RSS_FEEDS) {
+    activeValues.add(feed.url);
+    await prisma.source.upsert({
+      where: { type_value: { type: "rss_feed", value: feed.url } },
+      update: { enabled: true, name: feed.name },
+      create: {
+        type: "rss_feed",
+        value: feed.url,
+        name: feed.name,
+        pack: "editorial",
+        enabled: true,
+      },
+    });
+    rssFeedCount++;
+  }
+
   let searchQueryCount = 0;
   for (const query of SEARCH_QUERIES) {
     activeValues.add(query);
@@ -119,7 +169,7 @@ async function main() {
     searchQueryCount++;
   }
 
-  // Disable all other sources (the old 90 search_query single-term sources)
+  // Disable all other sources (old / stale entries)
   const allSources = await prisma.source.findMany({ select: { id: true, value: true, type: true } });
   let disabledCount = 0;
   for (const src of allSources) {
@@ -132,7 +182,7 @@ async function main() {
   // ─── Settings ─────────────────────────────────────────────────────────────
   const settings: { key: string; value: string }[] = [
     { key: "score_threshold", value: "55" },
-    { key: "min_store_score", value: "30" },     // lower threshold — Reddit content is noisier but richer
+    { key: "min_store_score", value: "30" },
     { key: "max_history_days", value: "183" },
     { key: "reddit_interval_minutes", value: "60" },
     { key: "rss_interval_minutes", value: "60" },
@@ -156,7 +206,10 @@ async function main() {
   console.log("Seed complete!");
   console.log(`  ${subredditCount} subreddits`);
   console.log(`  ${redditQueryCount} reddit_query sources`);
+  console.log(`  ${xQueryCount} x_query sources`);
+  console.log(`  ${rssFeedCount} rss_feed sources`);
   console.log(`  ${searchQueryCount} search_query (Google CSE) sources`);
+  console.log(`  Total active: ${subredditCount + redditQueryCount + xQueryCount + rssFeedCount + searchQueryCount}`);
   console.log(`  ${disabledCount} stale sources disabled`);
   console.log(`  ${settings.length} settings`);
 }

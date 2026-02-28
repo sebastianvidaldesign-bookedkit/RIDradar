@@ -62,8 +62,6 @@ const scoreColor = (s: number) => {
 
 export default function InboxPage() {
   const [sort, setSort] = useState("buyer_intent_high");
-  const [platform, setPlatform] = useState("all");
-  const [language, setLanguage] = useState("all");
   const [intent, setIntent] = useState("all");
   const [classification, setClassification] = useState("all");
   const [page, setPage] = useState(0);
@@ -85,8 +83,6 @@ export default function InboxPage() {
   params.set("sort", sort);
   params.set("status", "new");
   params.set("publishedAfter", ONE_YEAR_AGO);
-  if (platform !== "all") params.set("platform", platform);
-  if (language !== "all") params.set("language", language);
   if (intent !== "all") params.set("intent", intent);
   if (classification !== "all") params.set("classification", classification);
   params.set("limit", String(limit));
@@ -185,28 +181,6 @@ export default function InboxPage() {
         </Select>
 
         <Select
-          value={platform}
-          onChange={(e) => { setPlatform(e.target.value); setPage(0); }}
-          className="w-36"
-        >
-          <option value="all">All Sources</option>
-          <option value="reddit">Reddit</option>
-          <option value="rss">RSS</option>
-          <option value="search">Search</option>
-          <option value="x">X</option>
-        </Select>
-
-        <Select
-          value={language}
-          onChange={(e) => { setLanguage(e.target.value); setPage(0); }}
-          className="w-40"
-        >
-          <option value="all">All Languages</option>
-          <option value="en">English</option>
-          <option value="es">Spanish</option>
-        </Select>
-
-        <Select
           value={intent}
           onChange={(e) => { setIntent(e.target.value); setPage(0); }}
           className="w-48"
@@ -231,6 +205,7 @@ export default function InboxPage() {
           <option value="Aesthetic Affinity">Aesthetic Affinity</option>
           <option value="Platform Discovery">Platform Discovery</option>
           <option value="Gatekeeper">Gatekeeper</option>
+          <option value="Job Opportunity">Job Opportunity</option>
         </Select>
 
         <Button variant="ghost" size="sm" onClick={() => mutate()}>
