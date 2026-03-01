@@ -3,35 +3,24 @@ import { logger } from "../lib/logger";
 import type { Classification } from "shared";
 import { detectLanguage } from "../lib/language";
 
-const SYSTEM_PROMPT = `You are a classification engine for RID Radar, a signal intelligence tool that finds status ecosystem signals for Romance Is Dead NYC — a luxury/dark-fashion brand.
+const SYSTEM_PROMPT = `You are a fashion industry job posting classifier.
 
 Given a mention (title + content + source), output a JSON object with these exact fields:
 {
-  "relevant": boolean,       // true if this signal touches luxury, status, high-income identity, or gatekeeper ecosystems
+  "relevant": boolean,       // true if this is a fashion job opportunity
   "intent": string,          // one of: "need_help", "recommendation_request", "comparison", "sharing_resource", "other"
-  "audience": string,        // one of: "stylist", "founder", "finance", "art_collector", "creative_director", "private_club", "unknown"
+  "audience": string,        // one of: "designer", "stylist", "creative_director", "executive", "unknown"
   "urgency": string,         // one of: "high", "medium", "low"
-  "score": number,           // 0-100, how actionable this signal is for RID brand strategy
+  "score": number,           // 0-100, how relevant this is as a fashion job opportunity
   "reason": string           // brief explanation (1 sentence)
 }
 
-Rules:
-- REJECT: cheap, dupe, replica, fast fashion, budget, discount, clearance, dropshipping, side hustle, passive income, free webinar, how to get rich
-- PRIORITIZE: bespoke, atelier, couture, private members clubs, gala, invite-only, gatekeepers (stylists, PR), VC/founder operator language, editorial/avant-garde fashion
-- Score 80+ = direct gatekeeper or exclusive ecosystem signal
-- Score 50-79 = adjacent luxury or status signal
-- Score < 50 = weak or noisy signal
-- NYC context (Manhattan, SoHo, Tribeca, etc.) adds relevance weight
+Scoring rules:
+- HIGH (70-100): actual job posting for design director, creative director, handbag/accessories designer, fashion stylist, VP/executive fashion role — especially at luxury brands (LVMH, Kering, Hermès, Chanel, Dior, Gucci, etc.) or NYC-based
+- MEDIUM (40-69): job posting for related fashion roles (fashion editor, PR, brand manager, junior designer)
+- LOW (0-39): not a job posting, general fashion news, trend articles, or irrelevant content
 
-REJECT if content matches spam patterns: courses, webinars, MLM, get-rich schemes.
-Recognize these Spanish EPK terms as equivalent to English ones:
-- "kit de prensa" / "kit de prensa electrónico" = electronic press kit
-- "dossier artístico" = artist dossier / EPK
-- "carpeta de prensa" / "material de prensa" = press kit / press materials
-- "armar un press kit" = build a press kit (Argentine phrasing)
-- "conseguir shows/fechas" = get gigs/bookings
-- "promotor" = promoter, "sello" = record label, "recital" = concert, "boliche" = club/venue
-Score Spanish-language music EPK content with the same criteria as English content.
+REJECT (score 0, relevant false): spam, MLM, "make money" content, unpaid internships, dropshipping schemes.
 
 Output ONLY valid JSON, no other text.`;
 

@@ -20,7 +20,6 @@ export interface Classification {
   matchedTerms?: string[];
   whyMatched?: string;
   campaignIdea?: string;
-  buyerIntentScore?: number;
 }
 
 export interface RawMention {

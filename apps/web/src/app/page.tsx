@@ -31,7 +31,6 @@ interface MentionSummary {
   classification: string | null;
   whyMatched: string | null;
   campaignIdea: string | null;
-  buyerIntentScore: number | null;
 }
 
 interface MentionsResponse {
@@ -40,9 +39,9 @@ interface MentionsResponse {
 }
 
 // Computed once at module load — stable reference, no re-render loop
-const ONE_YEAR_AGO = (() => {
+const SIX_MONTHS_AGO = (() => {
   const d = new Date();
-  d.setFullYear(d.getFullYear() - 1);
+  d.setMonth(d.getMonth() - 6);
   d.setHours(0, 0, 0, 0);
   return d.toISOString();
 })();
@@ -61,7 +60,7 @@ const scoreColor = (s: number) => {
 };
 
 export default function InboxPage() {
-  const [sort, setSort] = useState("buyer_intent_high");
+  const [sort, setSort] = useState("score_high");
   const [intent, setIntent] = useState("all");
   const [classification, setClassification] = useState("all");
   const [page, setPage] = useState(0);
@@ -82,7 +81,7 @@ export default function InboxPage() {
   const params = new URLSearchParams();
   params.set("sort", sort);
   params.set("status", "new");
-  params.set("publishedAfter", ONE_YEAR_AGO);
+  params.set("publishedAfter", SIX_MONTHS_AGO);
   if (intent !== "all") params.set("intent", intent);
   if (classification !== "all") params.set("classification", classification);
   params.set("limit", String(limit));
@@ -173,7 +172,6 @@ export default function InboxPage() {
           onChange={(e) => { setSort(e.target.value); setPage(0); }}
           className="w-52"
         >
-          <option value="buyer_intent_high">Buyer Intent (High)</option>
           <option value="score_high">Match Score (High)</option>
           <option value="newest">Newest First</option>
           <option value="oldest">Oldest First</option>
@@ -199,13 +197,11 @@ export default function InboxPage() {
           className="w-52"
         >
           <option value="all">All Classifications</option>
-          <option value="Wealth Context">Wealth Context</option>
-          <option value="High-Income Identity">High-Income Identity</option>
-          <option value="Luxury Consumption">Luxury Consumption</option>
-          <option value="Aesthetic Affinity">Aesthetic Affinity</option>
-          <option value="Platform Discovery">Platform Discovery</option>
-          <option value="Gatekeeper">Gatekeeper</option>
-          <option value="Job Opportunity">Job Opportunity</option>
+          <option value="Design & Creative Direction">Design &amp; Creative Direction</option>
+          <option value="Accessories & Leather Goods">Accessories &amp; Leather Goods</option>
+          <option value="Styling">Styling</option>
+          <option value="Senior Design">Senior Design</option>
+          <option value="Fashion Executive">Fashion Executive</option>
         </Select>
 
         <Button variant="ghost" size="sm" onClick={() => mutate()}>
@@ -255,11 +251,6 @@ export default function InboxPage() {
                     <span className="text-xs text-muted-foreground">{m.sourceName}</span>
                     {m.classification && (
                       <Badge variant="outline">{m.classification}</Badge>
-                    )}
-                    {m.buyerIntentScore != null && m.buyerIntentScore > 0 && (
-                      <Badge variant="secondary" className="font-mono text-xs">
-                        Intent {m.buyerIntentScore}
-                      </Badge>
                     )}
                     {m.urgency && m.urgency !== "low" && (
                       <Badge variant={urgencyColor(m.urgency)}>{m.urgency}</Badge>

@@ -90,7 +90,6 @@ async function processMentions(rawMentions: RawMention[]): Promise<ProcessResult
           matchedTerms: classification.matchedTerms ?? undefined,
           whyMatched: classification.whyMatched ?? null,
           campaignIdea: classification.campaignIdea ?? null,
-          buyerIntentScore: classification.buyerIntentScore ?? null,
         },
       });
 

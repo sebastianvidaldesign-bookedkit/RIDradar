@@ -1,20 +1,16 @@
 import type { RIDClassification } from "shared";
 
 export const CAMPAIGN_IDEAS: Record<RIDClassification, string> = {
-  "Gatekeeper":
-    "Reach out with a private lookbook and request a styling session or brand consultation.",
-  "Wealth Context":
-    "Explore sponsorship, presence, or exclusive gifting at this event or venue.",
-  "Luxury Consumption":
-    "Use this consumption signal to validate positioning. Add to brand research board.",
-  "Platform Discovery":
-    "Seek access or waitlist position. Map community for potential partnership.",
-  "High-Income Identity":
-    "Build a campaign segment around this persona and operator language.",
-  "Aesthetic Affinity":
-    "Pull this reference into the next creative brief or mood board.",
-  "Job Opportunity":
-    "Evaluate for hiring, collaboration, or brand partnership potential.",
+  "Design & Creative Direction":
+    "Prepare portfolio + tailored cover letter. Research the brand's recent collections before applying.",
+  "Accessories & Leather Goods":
+    "Highlight leather goods / accessories portfolio. Note relevant brand DNA (heritage, materials, craft).",
+  "Styling":
+    "Send lookbook or styling reel. Reach out to the casting/creative team directly if contact is findable.",
+  "Senior Design":
+    "Review JD for tech pack / PLM requirements. Tailor portfolio to the aesthetic.",
+  "Fashion Executive":
+    "Research leadership team on brand site. Identify mutual connections for a warm intro.",
 };
 
 export function getCampaignIdea(classification: RIDClassification): string {

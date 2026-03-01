@@ -41,7 +41,6 @@ interface MentionDetail {
   matchedTerms: string[] | null;
   whyMatched: string | null;
   campaignIdea: string | null;
-  buyerIntentScore: number | null;
 }
 
 const variantLabel: Record<string, string> = {
@@ -263,14 +262,6 @@ export default function MentionDetailPage({ params }: { params: { id: string } }
                     {mention.score}/100
                   </dd>
                 </div>
-                {mention.buyerIntentScore != null && (
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Buyer Intent</dt>
-                    <dd className={`font-bold font-mono ${mention.buyerIntentScore >= 70 ? "text-emerald-600" : mention.buyerIntentScore >= 40 ? "text-amber-600" : "text-gray-500"}`}>
-                      {mention.buyerIntentScore}/100
-                    </dd>
-                  </div>
-                )}
                 {mention.classification && (
                   <div className="flex justify-between">
                     <dt className="text-muted-foreground">RID Category</dt>

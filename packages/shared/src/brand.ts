@@ -1,11 +1,9 @@
 export type RIDClassification =
-  | "Wealth Context"
-  | "High-Income Identity"
-  | "Luxury Consumption"
-  | "Aesthetic Affinity"
-  | "Platform Discovery"
-  | "Gatekeeper"
-  | "Job Opportunity";
+  | "Design & Creative Direction"
+  | "Accessories & Leather Goods"
+  | "Styling"
+  | "Senior Design"
+  | "Fashion Executive";
 
 export interface QueryPack {
   id: string;
@@ -18,158 +16,91 @@ export interface QueryPack {
 
 export const QUERY_PACKS: QueryPack[] = [
   {
-    id: "private-members",
-    name: "Private Club + Event Attire",
-    classification: "Wealth Context",
+    id: "design-creative-direction",
+    name: "Design & Creative Direction",
+    classification: "Design & Creative Direction",
     precision: false,
     terms: [
-      // High-signal identifiers
-      "private members club", "art advisory", "vip table", "black tie",
-      "club membership",
-      // Compound intent queries — dress code / event attire
-      "private members club dress code", "soho house dress code mens",
-      "core club nyc dress code", "casa cipriani dress code", "aman club dress code",
-      "black tie private club outfit", "charity gala menswear designer",
-      "vip dinner outfit luxury", "art collectors dinner attire",
-      // Event-driven purchase moments
-      "art basel outfit men", "museum gala attire men", "opera night outfit luxury",
-      "fundraiser gala menswear", "fashion week after party outfit",
-      "high society event attire",
+      "fashion design director", "design director", "head of design",
+      "creative director", "artistic director", "VP of design", "chief designer",
     ],
   },
   {
-    id: "finance",
-    name: "Finance / Founder Style Friction",
-    classification: "High-Income Identity",
-    precision: true,
-    terms: [
-      // High-signal finance identifiers
-      "closing dinner", "investment committee", "cap table", "term sheet",
-      "vc backed", "deal flow",
-      // Compound intent queries — finance × fashion
-      "venture capital gala outfit", "series a founder wardrobe",
-      "closing dinner finance outfit", "private equity event attire",
-      "family office gala outfit", "tech founder fashion brands",
-      "best luxury menswear for founders", "discreet luxury menswear",
-      "quiet luxury alternative brands",
-    ],
-  },
-  {
-    id: "luxury-apparel",
-    name: "Luxury Purchase Intent",
-    classification: "Luxury Consumption",
+    id: "accessories-leather-goods",
+    name: "Accessories & Leather Goods",
+    classification: "Accessories & Leather Goods",
     precision: false,
     terms: [
-      // High-signal apparel identifiers
-      "bespoke", "made to measure", "atelier", "haute couture",
-      "investment piece", "trunk show", "heritage brand",
-      // Purchase language queries
-      "where to buy bespoke blazer", "custom luxury menswear nyc",
-      "made to measure designer alternative", "private tailoring appointment nyc",
-      "trunk show nyc menswear", "exclusive menswear brand nyc",
-      "designer black blazer investment piece", "independent luxury brand menswear",
+      "handbag design director", "leather goods designer", "accessories designer",
+      "VP accessories", "bag designer", "footwear designer", "leather goods director",
     ],
   },
   {
-    id: "dark-luxury",
-    name: "Dark Luxury Buyer Intent",
-    classification: "Aesthetic Affinity",
+    id: "styling",
+    name: "Styling",
+    classification: "Styling",
     precision: false,
     terms: [
-      // Specific designer signals
-      "maison margiela", "rick owens", "comme des garcons", "yohji yamamoto",
-      "romance is dead", "cult brand",
-      // Buyer intent alternatives
-      "rick owens alternative brand", "maison margiela alternative designer",
-      "avant garde menswear brands to buy", "punk luxury fashion brand",
-      "dark luxury menswear brand", "designer tuxedo alternative",
-      "non traditional black tie outfit", "editorial menswear brands to buy",
-      // Dissatisfaction / switching signals
-      "tired of gucci what next", "alternative to balenciaga menswear",
-      "luxury without logos brand", "anti logo luxury menswear",
-      "unique luxury fashion brand", "statement menswear designer",
-      // 2025 trend language + direct competitors
-      "dark romance", "heliot emil", "post archive faction", "julius",
-      "ann demeulemeester", "dark aesthetic",
+      "fashion stylist", "wardrobe stylist", "editorial stylist", "styling director",
+      "head stylist", "celebrity stylist", "personal stylist", "costume designer",
     ],
   },
   {
-    id: "platform-discovery",
-    name: "Platform + Community Discovery",
-    classification: "Platform Discovery",
-    precision: true,
-    terms: [
-      "invite only", "waitlist", "exclusive membership",
-      "founding member access", "vetted community", "inner circle",
-    ],
-  },
-  {
-    id: "gatekeepers",
-    name: "Gatekeepers (Stylists, PR, Wardrobe Consultants)",
-    classification: "Gatekeeper",
+    id: "senior-design",
+    name: "Senior Design",
+    classification: "Senior Design",
     precision: false,
     terms: [
-      "personal stylist", "wardrobe consultant", "celebrity stylist",
-      "fashion editor", "publicist", "brand strategist", "luxury consultant",
-      "image consultant", "private shopper", "fashion director", "styling house",
-      "editorial stylist", "costume designer", "brand ambassador",
-      // Editorial publications as gatekeepers
-      "highsnobiety", "032c", "dazed", "another magazine",
+      "senior fashion designer", "lead designer", "senior designer",
+      "principal designer", "design lead",
     ],
   },
   {
-    id: "job-opportunities",
-    name: "Job Opportunities",
-    classification: "Job Opportunity",
+    id: "fashion-executive",
+    name: "Fashion Executive",
+    classification: "Fashion Executive",
     precision: false,
     terms: [
-      "fashion stylist", "wardrobe stylist", "styling job", "stylist position",
-      "fashion brand director", "creative director fashion brand", "handbag designer",
-      "leather goods designer", "accessories designer", "luxury brand director",
-      "fashion designer job", "menswear designer job", "ready to wear designer",
-      "brand manager fashion", "fashion PR job", "fashion communications",
-      "dark fashion brand hiring", "avant garde brand open position",
-      "independent fashion brand job NYC", "luxury menswear brand hiring",
+      "chief creative officer", "VP fashion", "vice president design",
+      "fashion VP", "CCO", "fashion c-suite",
     ],
   },
 ];
 
-/** Terms that signal active purchase intent — trigger +20 score boost */
-export const BUYER_INTENT_TERMS: string[] = [
-  "recommend", "looking for", "where to buy", "what should i wear",
-  "any suggestions", "worth it", "best brand", "price range",
-  "investment piece", "custom made", "tailoring", "fit", "quality",
-  "any recommendations", "which brand", "looking to buy", "where can i find",
+/** Terms that confirm this is an actual job posting — trigger +15 score boost */
+export const JOB_CONFIRMATION_TERMS: string[] = [
+  "hiring", "apply now", "open role", "we are looking for",
+  "job opening", "position available", "join our team", "now hiring",
+];
+
+/** Luxury/premium brands — trigger +15 score boost */
+export const LUXURY_BRAND_TERMS: string[] = [
+  "LVMH", "Kering", "Hermès", "Chanel", "Dior", "Louis Vuitton",
+  "Gucci", "Saint Laurent", "Balenciaga", "Coach", "Tory Burch",
+  "Michael Kors", "Ralph Lauren", "Prada", "Bottega Veneta",
+  "Burberry", "Valentino", "Versace", "Fendi", "Givenchy",
 ];
 
 export const NEGATIVE_KEYWORDS: string[] = [
-  "cheap", "dupe", "replica", "shein", "aliexpress", "temu", "affordable",
-  "fast fashion", "budget", "discount", "clearance", "knockoff", "counterfeit",
-  "fake designer", "dhgate", "forever 21", "fashion nova", "zaful", "romwe", "primark",
+  "intern", "unpaid", "volunteer", "entry level",
 ];
 
 export const SPAM_PATTERNS: string[] = [
-  "how to become rich", "how to get rich", "make money online", "online course",
-  "free webinar", "mentorship program", "dropshipping", "side hustle", "make $",
-  "passive income", "financial freedom", "secret method", "dm me for",
-  "link in bio course", "affiliate link", "discount code",
+  "make money online", "dropshipping", "side hustle", "passive income", "dm me for",
 ];
 
-/** Specific NYC neighborhoods — score boost only, not a filter */
+/** NYC terms — score boost only, not a filter */
 export const NYC_BOOST_TERMS: string[] = [
-  "soho", "tribeca", "upper east side", "nomad", "west village",
-  "chelsea", "hudson yards", "meatpacking", "brooklyn heights", "dumbo",
+  "new york", "nyc", "manhattan", "brooklyn", "new york city",
 ];
 
 export const NYC_SCORE_BOOST = 10;
 
-/** Per-classification minimum store score overrides */
+/** Per-classification minimum score thresholds */
 export const CLASSIFICATION_THRESHOLDS: Record<RIDClassification, number> = {
-  "Gatekeeper": 25,          // High value — store more aggressively
-  "Platform Discovery": 50,  // Spam-prone — higher bar
-  "Wealth Context": 35,
-  "High-Income Identity": 35,
-  "Luxury Consumption": 35,
-  "Aesthetic Affinity": 35,
-  "Job Opportunity": 20,     // Low bar — all relevant jobs matter
+  "Design & Creative Direction": 20,
+  "Accessories & Leather Goods": 20,
+  "Styling": 20,
+  "Senior Design": 25,
+  "Fashion Executive": 20,
 };

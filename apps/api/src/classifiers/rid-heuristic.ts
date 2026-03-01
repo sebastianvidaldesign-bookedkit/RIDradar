@@ -3,7 +3,8 @@ import {
   QUERY_PACKS,
   NEGATIVE_KEYWORDS,
   SPAM_PATTERNS,
-  BUYER_INTENT_TERMS,
+  JOB_CONFIRMATION_TERMS,
+  LUXURY_BRAND_TERMS,
   NYC_BOOST_TERMS,
   NYC_SCORE_BOOST,
   CLASSIFICATION_THRESHOLDS,
@@ -14,28 +15,6 @@ import { detectLanguage } from "../lib/language";
 interface PackMatch {
   pack: (typeof QUERY_PACKS)[number];
   matched: string[];
-}
-
-// Terms that signal event / occasion context
-const EVENT_CONTEXT_TERMS = [
-  "outfit", "attire", "dress code", "what to wear", "gala",
-  "dinner attire", "event attire", "menswear",
-];
-
-// Terms that signal active apparel shopping context
-const APPAREL_CONTEXT_TERMS = [
-  "blazer", "tuxedo", "suit", "tailoring", "bespoke", "designer",
-  "wardrobe", "menswear brand", "luxury brand",
-];
-
-/** Compute a 0–100 buyer intent score independent of pack scoring */
-function computeBuyerIntentScore(text: string, nycBoost: number): number {
-  let score = 0;
-  if (BUYER_INTENT_TERMS.some((t) => text.includes(t.toLowerCase()))) score += 35;
-  if (EVENT_CONTEXT_TERMS.some((t) => text.includes(t.toLowerCase()))) score += 25;
-  if (APPAREL_CONTEXT_TERMS.some((t) => text.includes(t.toLowerCase()))) score += 20;
-  if (nycBoost > 0) score += 10;
-  return Math.min(100, score);
 }
 
 export function classifyRidHeuristic(title: string, content: string): Classification {
@@ -102,22 +81,24 @@ export function classifyRidHeuristic(title: string, content: string): Classifica
   // Total matched terms across all qualifying packs
   const totalMatches = qualifyingMatches.reduce((n, pm) => n + pm.matched.length, 0);
 
-  // NYC boost
+  // Job confirmation bonus (+15): confirms an actual posting, not an article
+  const jobConfirmBoost = JOB_CONFIRMATION_TERMS.some((t) => text.includes(t.toLowerCase()))
+    ? 15
+    : 0;
+
+  // Luxury brand bonus (+15): boosts desirable employers
+  const luxuryBrandBoost = LUXURY_BRAND_TERMS.some((t) => text.toLowerCase().includes(t.toLowerCase()))
+    ? 15
+    : 0;
+
+  // NYC bonus (+10)
   const nycBoost = NYC_BOOST_TERMS.some((t) => text.includes(t.toLowerCase()))
     ? NYC_SCORE_BOOST
     : 0;
 
-  // Buyer intent boost (+20 if any buying-language term present)
-  const buyerIntentBoost = BUYER_INTENT_TERMS.some((t) => text.includes(t.toLowerCase()))
-    ? 20
-    : 0;
-
   // Score formula
-  const rawScore = Math.min(100, totalMatches * 12 + 25) + nycBoost + buyerIntentBoost;
+  const rawScore = Math.min(100, totalMatches * 15 + 20) + jobConfirmBoost + luxuryBrandBoost + nycBoost;
   const score = Math.min(100, rawScore);
-
-  // Buyer intent score (independent composite)
-  const buyerIntentScore = computeBuyerIntentScore(text, nycBoost);
 
   // Primary classification: qualifying pack with most matches
   const primary = qualifyingMatches.reduce((best, pm) =>
@@ -143,8 +124,9 @@ export function classifyRidHeuristic(title: string, content: string): Classifica
   // Build human-readable explanation
   const termList = primary.matched.slice(0, 5).join('", "');
   let whyMatched = `Matched ${primary.matched.length} signal${primary.matched.length !== 1 ? "s" : ""} in "${primary.pack.name}": "${termList}"`;
+  if (jobConfirmBoost > 0) whyMatched += ` Job posting confirmed (+15).`;
+  if (luxuryBrandBoost > 0) whyMatched += ` Luxury brand detected (+15).`;
   if (nycBoost > 0) whyMatched += ` NYC context detected (+${NYC_SCORE_BOOST}).`;
-  if (buyerIntentBoost > 0) whyMatched += ` Buyer intent language detected (+20).`;
 
   const matchedTerms = qualifyingMatches.flatMap((pm) => pm.matched);
   const campaignIdea = getCampaignIdea(ridClassification);
@@ -161,6 +143,5 @@ export function classifyRidHeuristic(title: string, content: string): Classifica
     matchedTerms,
     whyMatched,
     campaignIdea,
-    buyerIntentScore,
   };
 }

@@ -9,7 +9,8 @@
     "db:migrate": "pnpm --filter api exec prisma migrate dev",
     "db:push": "pnpm --filter api exec prisma db push",
     "db:seed": "pnpm --filter api exec prisma db seed",
-    "db:studio": "pnpm --filter api exec prisma studio"
+    "db:studio": "pnpm --filter api exec prisma studio",
+    "db:seed:jobs": "ts-node apps/api/prisma/seed-fashion-jobs.ts"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
