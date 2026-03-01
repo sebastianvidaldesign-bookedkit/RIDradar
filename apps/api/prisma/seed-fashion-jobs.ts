@@ -23,6 +23,7 @@ const SEARCH_QUERIES = [
   '"fashion design director" NYC job -site:linkedin.com',
   'site:fashionunited.com "design director" OR "creative director" OR "leather goods"',
   'site:wwd.com "design director" OR "leather goods" job 2025',
+  'site:businessoffashion.com "design director" OR "creative director" OR "leather goods" job',
 ];
 
 // ─── REDDIT SUBREDDITS ────────────────────────────────────────────────────────
