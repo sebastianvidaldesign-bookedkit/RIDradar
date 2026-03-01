@@ -31,8 +31,21 @@ export const QUERY_PACKS: QueryPack[] = [
     classification: "Accessories & Leather Goods",
     precision: false,
     terms: [
-      "handbag design director", "leather goods designer", "accessories designer",
-      "VP accessories", "bag designer", "footwear designer", "leather goods director",
+      // Director / VP level
+      "handbag design director", "leather goods director", "accessories director",
+      "VP of leather goods", "VP leathergoods", "VP of accessories",
+      "creative director handbags", "creative director leather goods",
+      "creative director handbags and leather goods",
+      "head of leather goods", "head of handbags", "head of accessories",
+      // Designer level
+      "leather goods designer", "leathergoods designer", "accessories designer",
+      "handbag designer", "bag designer", "small leather goods designer",
+      "senior designer handbags", "senior handbag designer",
+      "senior leather goods designer", "senior leathergoods designer",
+      "senior accessories designer",
+      // Broader category
+      "footwear designer", "shoes designer", "VP accessories",
+      "accessories design", "leather goods design", "handbag design",
     ],
   },
   {
@@ -53,6 +66,9 @@ export const QUERY_PACKS: QueryPack[] = [
     terms: [
       "senior fashion designer", "lead designer", "senior designer",
       "principal designer", "design lead",
+      "senior handbag designer", "senior leather goods designer",
+      "senior leathergoods designer", "senior accessories designer",
+      "lead accessories designer", "lead leather goods designer",
     ],
   },
   {
@@ -63,6 +79,8 @@ export const QUERY_PACKS: QueryPack[] = [
     terms: [
       "chief creative officer", "VP fashion", "vice president design",
       "fashion VP", "CCO", "fashion c-suite",
+      "VP of leather goods", "VP leathergoods", "vice president leather goods",
+      "vice president accessories", "VP of handbags",
     ],
   },
 ];

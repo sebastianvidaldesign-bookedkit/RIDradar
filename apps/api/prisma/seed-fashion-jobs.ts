@@ -14,11 +14,15 @@ const RSS_FEEDS: { url: string; name: string }[] = [
 const SEARCH_QUERIES = [
   '"fashion design director" job -site:linkedin.com',
   '"handbag design director" OR "leather goods director" job -site:linkedin.com',
+  '"creative director handbags" OR "creative director leather goods" job -site:linkedin.com',
+  '"VP of leather goods" OR "VP leathergoods" OR "VP of handbags" job -site:linkedin.com',
+  '"senior handbag designer" OR "senior leather goods designer" job -site:linkedin.com',
+  '"leather goods designer" OR "leathergoods designer" job NYC -site:linkedin.com',
   '"fashion stylist" director position -site:linkedin.com',
   '"creative director" fashion luxury job -site:linkedin.com',
   '"fashion design director" NYC job -site:linkedin.com',
-  'site:fashionunited.com "design director" OR "creative director"',
-  'site:wwd.com "design director" job 2025',
+  'site:fashionunited.com "design director" OR "creative director" OR "leather goods"',
+  'site:wwd.com "design director" OR "leather goods" job 2025',
 ];
 
 // ─── REDDIT SUBREDDITS ────────────────────────────────────────────────────────
@@ -31,7 +35,9 @@ const SUBREDDITS = [
 const REDDIT_QUERIES = [
   '"design director" fashion job hiring',
   '"fashion stylist" job NYC',
-  '"handbag designer" OR "accessories designer" position',
+  '"handbag designer" OR "leather goods designer" position',
+  '"creative director" leather goods OR handbags job',
+  '"VP" leather goods OR handbags fashion hiring',
 ];
 
 // ─── X / TWITTER QUERIES ──────────────────────────────────────────────────────
@@ -39,6 +45,9 @@ const X_QUERIES = [
   '"design director" fashion hiring -is:retweet lang:en',
   '"creative director" fashion job opening -is:retweet lang:en',
   '"handbag designer" OR "leather goods designer" job -is:retweet lang:en',
+  '"creative director handbags" OR "creative director leather goods" -is:retweet lang:en',
+  '"VP of leather goods" OR "VP leathergoods" OR "VP handbags" hiring -is:retweet lang:en',
+  '"senior leather goods designer" OR "senior handbag designer" job -is:retweet lang:en',
   '"fashion stylist" job NYC hiring -is:retweet lang:en',
   '"fashion executive" OR "chief creative officer" fashion hiring -is:retweet lang:en',
 ];
