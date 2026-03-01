@@ -34,6 +34,15 @@ const REDDIT_QUERIES = [
   '"handbag designer" OR "accessories designer" position',
 ];
 
+// ─── X / TWITTER QUERIES ──────────────────────────────────────────────────────
+const X_QUERIES = [
+  '"design director" fashion hiring -is:retweet lang:en',
+  '"creative director" fashion job opening -is:retweet lang:en',
+  '"handbag designer" OR "leather goods designer" job -is:retweet lang:en',
+  '"fashion stylist" job NYC hiring -is:retweet lang:en',
+  '"fashion executive" OR "chief creative officer" fashion hiring -is:retweet lang:en',
+];
+
 async function main() {
   console.log("Seeding Fashion Job Radar database...");
 
@@ -101,13 +110,28 @@ async function main() {
     redditQueryCount++;
   }
 
-  const total = rssFeedCount + searchQueryCount + subredditCount + redditQueryCount;
+  let xQueryCount = 0;
+  for (const query of X_QUERIES) {
+    await prisma.source.create({
+      data: {
+        type: "x_query",
+        value: query,
+        name: `x:"${query}"`,
+        pack: "jobs",
+        enabled: true,
+      },
+    });
+    xQueryCount++;
+  }
+
+  const total = rssFeedCount + searchQueryCount + subredditCount + redditQueryCount + xQueryCount;
 
   console.log("Seed complete!");
   console.log(`  ${rssFeedCount} RSS feeds`);
   console.log(`  ${searchQueryCount} search queries`);
   console.log(`  ${subredditCount} subreddits`);
   console.log(`  ${redditQueryCount} Reddit queries`);
+  console.log(`  ${xQueryCount} X/Twitter queries`);
   console.log(`  Total: ${total} sources`);
 }
 
