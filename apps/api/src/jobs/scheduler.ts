@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import { config } from "../config";
 import { logger } from "../lib/logger";
-import { runRedditCollect, runRssCollect, runSearchCollect, runXCollect } from "./collect";
+import { runRedditCollect, runRssCollect, runSearchCollect, runXCollect, runApifyCollect } from "./collect";
 import { runDigest } from "./digest";
 import type { JobsStatusMap } from "shared";
 
@@ -12,6 +12,7 @@ export const jobStatus: JobsStatusMap = {
   search: { running: false, lastRun: null, lastError: null, itemsFound: 0 },
   x: { running: false, lastRun: null, lastError: null, itemsFound: 0 },
   digest: { running: false, lastRun: null, lastError: null, itemsFound: 0 },
+  apify: { running: false, lastRun: null, lastError: null, itemsFound: 0 },
 };
 
 async function safeRun(
@@ -57,6 +58,9 @@ export function triggerJob(jobName: string): void {
     case "digest":
       safeRun("digest", runDigest);
       break;
+    case "apify":
+      safeRun("apify", runApifyCollect);
+      break;
     case "all":
       safeRun("reddit", runRedditCollect);
       safeRun("rss", runRssCollect);
@@ -100,6 +104,16 @@ export function startScheduler(): void {
     safeRun("x", runXCollect);
   });
 
+  // Daily Apify collection at 07:00 ET — Instagram + TikTok hashtag scrape
+  cron.schedule(
+    "0 7 * * *",
+    () => {
+      logger.info("Cron: Daily Apify collection triggered (07:00 ET)");
+      safeRun("apify", runApifyCollect);
+    },
+    { timezone: "America/New_York" }
+  );
+
   // Daily digest — disabled until email is configured
   // cron.schedule(
   //   "0 8 * * *",
@@ -114,5 +128,6 @@ export function startScheduler(): void {
   logger.info(`  Reddit + RSS: every ${config.redditIntervalMinutes} min`);
   logger.info(`  Web search: every ${config.searchIntervalHours} hours`);
   logger.info(`  X (Twitter): every ${config.searchIntervalHours} hours`);
+  logger.info(`  Apify (Instagram + TikTok): daily at 07:00 ET`);
   logger.info(`  Daily digest: disabled`);
 }

@@ -43,6 +43,9 @@ export const config = {
   googleCseKey: process.env.GOOGLE_CSE_KEY || "",
   googleCseCx: process.env.GOOGLE_CSE_CX || "",
 
+  // Apify
+  apifyToken: process.env.APIFY_TOKEN || "",
+
   // X (Twitter) — token from dev console may be URL-encoded (%3D → =)
   xBearerToken: decodeURIComponent(process.env.X_BEARER_TOKEN || ""),
 

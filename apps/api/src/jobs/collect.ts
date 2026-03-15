@@ -7,6 +7,7 @@ import { collectAllReddit } from "../collectors/reddit";
 import { collectAllRss } from "../collectors/rss";
 import { collectAllSearch } from "../collectors/search";
 import { collectAllX } from "../collectors/x";
+import { collectAllApify } from "../collectors/apify";
 import type { RawMention } from "shared";
 
 interface ProcessResult {
@@ -161,6 +162,15 @@ export async function runXCollect(): Promise<number> {
   const rawMentions = await collectAllX();
   const result = await processMentions(rawMentions);
   logResult("X collection", result);
+  return result.inserted_count;
+}
+
+export async function runApifyCollect(): Promise<number> {
+  logger.info("Starting Apify collection...");
+  await syncMaxHistoryDays();
+  const rawMentions = await collectAllApify();
+  const result = await processMentions(rawMentions);
+  logResult("Apify collection", result);
   return result.inserted_count;
 }
 

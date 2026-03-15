@@ -60,4 +60,5 @@ export interface JobsStatusMap {
   search: JobStatus;
   x: JobStatus;
   digest: JobStatus;
+  apify: JobStatus;
 }
