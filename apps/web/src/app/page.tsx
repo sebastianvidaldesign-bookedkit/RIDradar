@@ -143,9 +143,7 @@ export default function InboxPage() {
           <Button size="sm" variant="outline" disabled={!!runningJob} onClick={() => runJob("x")}>
             {runningJob === "x" ? "Running..." : "Run X"}
           </Button>
-          <Button size="sm" variant="outline" disabled={!!runningJob} onClick={() => runJob("digest")}>
-            {runningJob === "digest" ? "Running..." : "Run Digest"}
-          </Button>
+          {/* Run Digest button hidden until email is configured */}
           <Button size="sm" disabled={!!runningJob} onClick={() => runJob("all")}>
             {runningJob === "all" ? "Running..." : "Run All"}
           </Button>
