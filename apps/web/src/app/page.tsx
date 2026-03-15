@@ -131,21 +131,8 @@ export default function InboxPage() {
         </div>
 
         <div className="flex gap-2">
-          <Button size="sm" variant="outline" disabled={!!runningJob} onClick={() => runJob("reddit")}>
-            {runningJob === "reddit" ? "Running..." : "Run Reddit"}
-          </Button>
-          <Button size="sm" variant="outline" disabled={!!runningJob} onClick={() => runJob("rss")}>
-            {runningJob === "rss" ? "Running..." : "Run RSS"}
-          </Button>
-          <Button size="sm" variant="outline" disabled={!!runningJob} onClick={() => runJob("search")}>
-            {runningJob === "search" ? "Running..." : "Run Search"}
-          </Button>
-          <Button size="sm" variant="outline" disabled={!!runningJob} onClick={() => runJob("x")}>
-            {runningJob === "x" ? "Running..." : "Run X"}
-          </Button>
-          {/* Run Digest button hidden until email is configured */}
-          <Button size="sm" disabled={!!runningJob} onClick={() => runJob("all")}>
-            {runningJob === "all" ? "Running..." : "Run All"}
+          <Button size="sm" disabled={!!runningJob} onClick={() => runJob("apify")}>
+            {runningJob === "apify" ? "Running..." : "Run Now"}
           </Button>
         </div>
       </div>

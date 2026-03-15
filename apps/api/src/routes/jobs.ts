@@ -8,7 +8,7 @@ export const jobsRouter: IRouter = Router();
 jobsRouter.post("/run", async (req, res) => {
   try {
     const { type } = req.body;
-    const validTypes = ["reddit", "rss", "search", "x", "digest", "all"];
+    const validTypes = ["reddit", "rss", "search", "x", "digest", "apify", "all"];
 
     if (!type || !validTypes.includes(type)) {
       return res.status(400).json({
