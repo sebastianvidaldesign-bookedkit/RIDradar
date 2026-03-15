@@ -100,19 +100,19 @@ export function startScheduler(): void {
     safeRun("x", runXCollect);
   });
 
-  // Daily digest at 08:00 in configured timezone
-  cron.schedule(
-    "0 8 * * *",
-    () => {
-      logger.info(`Cron: Daily digest triggered (timezone: ${config.digestTimezone})`);
-      safeRun("digest", runDigest);
-    },
-    { timezone: config.digestTimezone }
-  );
+  // Daily digest — disabled until email is configured
+  // cron.schedule(
+  //   "0 8 * * *",
+  //   () => {
+  //     logger.info(`Cron: Daily digest triggered (timezone: ${config.digestTimezone})`);
+  //     safeRun("digest", runDigest);
+  //   },
+  //   { timezone: config.digestTimezone }
+  // );
 
   logger.info(`Scheduler started:`);
   logger.info(`  Reddit + RSS: every ${config.redditIntervalMinutes} min`);
   logger.info(`  Web search: every ${config.searchIntervalHours} hours`);
   logger.info(`  X (Twitter): every ${config.searchIntervalHours} hours`);
-  logger.info(`  Daily digest: 08:00 ${config.digestTimezone}`);
+  logger.info(`  Daily digest: disabled`);
 }
