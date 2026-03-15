@@ -32,8 +32,10 @@ async function runActor(
   input: Record<string, unknown>,
   timeoutSecs = 120
 ): Promise<unknown[]> {
+  // Apify API requires ~ as separator in actor IDs (e.g. clockworks~tiktok-scraper)
+  const actorSlug = actorId.replace("/", "~");
   const url =
-    `https://api.apify.com/v2/acts/${actorId}/run-sync-get-dataset-items` +
+    `https://api.apify.com/v2/acts/${actorSlug}/run-sync-get-dataset-items` +
     `?token=${config.apifyToken}&timeout=${timeoutSecs}&memory=256`;
 
   const res = await fetch(url, {
