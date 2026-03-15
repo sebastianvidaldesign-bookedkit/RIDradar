@@ -58,9 +58,11 @@ async function scrapeInstagram(): Promise<RawMention[]> {
   for (const hashtag of INSTAGRAM_HASHTAGS) {
     logger.info(`Apify Instagram scraping: #${hashtag}`);
     try {
-      const items = await runActor("apify/instagram-hashtag-scraper", {
+      const items = await runActor("apify/instagram-scraper", {
         hashtags: [hashtag],
+        resultsType: "posts",
         resultsLimit: MAX_PER_HASHTAG,
+        addParentData: false,
       });
 
       for (const item of items as Array<Record<string, unknown>>) {
@@ -92,10 +94,9 @@ async function scrapeTikTok(): Promise<RawMention[]> {
   for (const hashtag of TIKTOK_HASHTAGS) {
     logger.info(`Apify TikTok scraping: #${hashtag}`);
     try {
-      const items = await runActor("clockworks/free-tiktok-scraper", {
+      const items = await runActor("clockworks/tiktok-scraper", {
         hashtags: [hashtag],
         resultsPerPage: MAX_PER_HASHTAG,
-        maxResults: MAX_PER_HASHTAG,
       });
 
       for (const item of items as Array<Record<string, unknown>>) {
