@@ -129,22 +129,12 @@ export function classifyHeuristic(title: string, content: string): Classificatio
   const rawScore = epkScore + musicScore + intentScore + urgencyBonus - corpPenalty;
   const score = Math.max(0, Math.min(100, rawScore));
 
-  // Determine intent (EN + ES)
+  // Determine intent
   let intent: Intent = "other";
-  if (text.match(/how (do|to|can|should)|cómo (hago|puedo|armo|hacer)/)) intent = "need_help";
-  else if (text.match(/recommend|suggestion|best|which|what.*use|recomiend|mejor|cuál/)) intent = "recommendation_request";
-  else if (text.match(/vs\.?|versus|compar|better than|difference between|diferencia entre/)) intent = "comparison";
-  else if (text.match(/check out|i (made|built|created)|sharing|here'?s my|just launched|les comparto|hice un/)) intent = "sharing_resource";
-  else if (intentScore > 0) intent = "need_help";
+  if (intentScore > 0) intent = "shopping_intent";
 
-  // Determine audience (EN + ES)
-  let audience: Audience = "unknown";
-  if (text.match(/\bdj\b|disc\s?jockey/)) audience = "dj";
-  else if (text.match(/producer|beatmak|beat\s?mak|productor/)) audience = "producer";
-  else if (text.match(/\bband\b|\bbanda\b/)) audience = "band";
-  else if (text.match(/singer|vocalist|solo artist|cantante|vocalista|solista/)) audience = "singer";
-  else if (text.match(/manager|management|a&r|representante|mánager/)) audience = "manager";
-  else if (text.match(/venue|promoter|booking agent|talent buyer|promotor|boliche|sala/)) audience = "venue";
+  // Determine audience
+  const audience: Audience = "unknown";
 
   // Determine urgency
   let urgency: Urgency = "low";

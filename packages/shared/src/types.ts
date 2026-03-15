@@ -1,8 +1,8 @@
 export type Platform = "reddit" | "rss" | "search" | "x";
 export type { RIDClassification } from "./brand";
 export type MentionStatus = "new" | "reviewed" | "replied" | "ignored";
-export type Intent = "need_help" | "recommendation_request" | "comparison" | "sharing_resource" | "other";
-export type Audience = "dj" | "producer" | "band" | "singer" | "manager" | "venue" | "unknown";
+export type Intent = "shopping_intent" | "event_announcement" | "outfit_request" | "other";
+export type Audience = "bride" | "wedding_guest" | "gala_attendee" | "fashion_show_attendee" | "premiere_attendee" | "award_ceremony_attendee" | "unknown";
 export type Urgency = "high" | "medium" | "low";
 export type DraftVariant = "concise" | "detailed" | "question_first";
 export type SourceType = "subreddit" | "reddit_query" | "rss_feed" | "search_query" | "x_query";
