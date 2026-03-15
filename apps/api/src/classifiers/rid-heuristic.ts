@@ -3,10 +3,11 @@ import {
   QUERY_PACKS,
   NEGATIVE_KEYWORDS,
   SPAM_PATTERNS,
-  JOB_CONFIRMATION_TERMS,
+  EVENT_INTENT_TERMS,
   LUXURY_BRAND_TERMS,
   NYC_BOOST_TERMS,
   NYC_SCORE_BOOST,
+  URGENCY_TERMS,
   CLASSIFICATION_THRESHOLDS,
 } from "shared";
 import { getCampaignIdea } from "../lib/campaignIdeas";
@@ -81,14 +82,14 @@ export function classifyRidHeuristic(title: string, content: string): Classifica
   // Total matched terms across all qualifying packs
   const totalMatches = qualifyingMatches.reduce((n, pm) => n + pm.matched.length, 0);
 
-  // Job confirmation bonus (+15): confirms an actual posting, not an article
-  const jobConfirmBoost = JOB_CONFIRMATION_TERMS.some((t) => text.includes(t.toLowerCase()))
+  // Event intent bonus (+15): confirms outfit shopping need
+  const eventIntentBoost = EVENT_INTENT_TERMS.some((t) => text.includes(t.toLowerCase()))
     ? 15
     : 0;
 
-  // Luxury brand bonus (+15): boosts desirable employers
+  // Luxury brand bonus (+10): boosts desirable audience signals
   const luxuryBrandBoost = LUXURY_BRAND_TERMS.some((t) => text.toLowerCase().includes(t.toLowerCase()))
-    ? 15
+    ? 10
     : 0;
 
   // NYC bonus (+10)
@@ -96,8 +97,13 @@ export function classifyRidHeuristic(title: string, content: string): Classifica
     ? NYC_SCORE_BOOST
     : 0;
 
+  // Urgency bonus (+10)
+  const urgencyBoost = URGENCY_TERMS.some((t) => text.includes(t.toLowerCase()))
+    ? 10
+    : 0;
+
   // Score formula
-  const rawScore = Math.min(100, totalMatches * 15 + 20) + jobConfirmBoost + luxuryBrandBoost + nycBoost;
+  const rawScore = Math.min(100, totalMatches * 15 + 20) + eventIntentBoost + luxuryBrandBoost + nycBoost + urgencyBoost;
   const score = Math.min(100, rawScore);
 
   // Primary classification: qualifying pack with most matches
@@ -123,17 +129,18 @@ export function classifyRidHeuristic(title: string, content: string): Classifica
 
   // Build human-readable explanation
   const termList = primary.matched.slice(0, 5).join('", "');
-  let whyMatched = `Matched ${primary.matched.length} signal${primary.matched.length !== 1 ? "s" : ""} in "${primary.pack.name}": "${termList}"`;
-  if (jobConfirmBoost > 0) whyMatched += ` Job posting confirmed (+15).`;
-  if (luxuryBrandBoost > 0) whyMatched += ` Luxury brand detected (+15).`;
+  let whyMatched = `Event signal: matched ${primary.matched.length} term${primary.matched.length !== 1 ? "s" : ""} in "${primary.pack.name}": "${termList}"`;
+  if (eventIntentBoost > 0) whyMatched += ` Outfit intent detected (+15).`;
+  if (luxuryBrandBoost > 0) whyMatched += ` Luxury brand detected (+10).`;
   if (nycBoost > 0) whyMatched += ` NYC context detected (+${NYC_SCORE_BOOST}).`;
+  if (urgencyBoost > 0) whyMatched += ` Urgency signal detected (+10).`;
 
   const matchedTerms = qualifyingMatches.flatMap((pm) => pm.matched);
   const campaignIdea = getCampaignIdea(ridClassification);
 
   return {
     relevant: true,
-    intent: "other",
+    intent: "event_announcement",
     audience: "unknown",
     urgency: score >= 75 ? "high" : score >= 50 ? "medium" : "low",
     score,

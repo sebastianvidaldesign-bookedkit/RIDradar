@@ -1,9 +1,9 @@
 export type RIDClassification =
-  | "Design & Creative Direction"
-  | "Accessories & Leather Goods"
-  | "Styling"
-  | "Senior Design"
-  | "Fashion Executive";
+  | "Wedding"
+  | "Gala"
+  | "Fashion Show"
+  | "Movie / Theater Premiere"
+  | "Award Ceremony";
 
 export interface QueryPack {
   id: string;
@@ -16,91 +16,76 @@ export interface QueryPack {
 
 export const QUERY_PACKS: QueryPack[] = [
   {
-    id: "design-creative-direction",
-    name: "Design & Creative Direction",
-    classification: "Design & Creative Direction",
+    id: "wedding",
+    name: "Wedding",
+    classification: "Wedding",
     precision: false,
     terms: [
-      "fashion design director", "design director", "head of design",
-      "creative director", "artistic director", "VP of design", "chief designer",
+      "going to a wedding", "attending a wedding", "wedding guest",
+      "bridesmaid", "need wedding guest outfit", "what to wear to a wedding",
+      "maid of honor",
     ],
   },
   {
-    id: "accessories-leather-goods",
-    name: "Accessories & Leather Goods",
-    classification: "Accessories & Leather Goods",
+    id: "gala",
+    name: "Gala",
+    classification: "Gala",
     precision: false,
     terms: [
-      // Director / VP level
-      "handbag design director", "leather goods director", "accessories director",
-      "VP of leather goods", "VP leathergoods", "VP of accessories",
-      "creative director handbags", "creative director leather goods",
-      "creative director handbags and leather goods",
-      "head of leather goods", "head of handbags", "head of accessories",
-      // Designer level
-      "leather goods designer", "leathergoods designer", "accessories designer",
-      "handbag designer", "bag designer", "small leather goods designer",
-      "senior designer handbags", "senior handbag designer",
-      "senior leather goods designer", "senior leathergoods designer",
-      "senior accessories designer",
-      // Broader category
-      "footwear designer", "shoes designer", "VP accessories",
-      "accessories design", "leather goods design", "handbag design",
+      "going to a gala", "attending a gala", "gala outfit",
+      "charity gala", "met gala", "black tie gala", "fundraiser gala",
     ],
   },
   {
-    id: "styling",
-    name: "Styling",
-    classification: "Styling",
+    id: "fashion-show",
+    name: "Fashion Show",
+    classification: "Fashion Show",
     precision: false,
     terms: [
-      "fashion stylist", "wardrobe stylist", "editorial stylist", "styling director",
-      "head stylist", "celebrity stylist", "personal stylist", "costume designer",
+      "fashion show", "front row", "fashion week", "NYFW", "PFW",
+      "invited to show", "attending fashion week", "runway show",
     ],
   },
   {
-    id: "senior-design",
-    name: "Senior Design",
-    classification: "Senior Design",
+    id: "movie-theater-premiere",
+    name: "Movie / Theater Premiere",
+    classification: "Movie / Theater Premiere",
     precision: false,
     terms: [
-      "senior fashion designer", "lead designer", "senior designer",
-      "principal designer", "design lead",
-      "senior handbag designer", "senior leather goods designer",
-      "senior leathergoods designer", "senior accessories designer",
-      "lead accessories designer", "lead leather goods designer",
+      "movie premiere", "film premiere", "theater premiere", "premiere night",
+      "going to a premiere", "red carpet event", "attending the premiere",
     ],
   },
   {
-    id: "fashion-executive",
-    name: "Fashion Executive",
-    classification: "Fashion Executive",
+    id: "award-ceremony",
+    name: "Award Ceremony",
+    classification: "Award Ceremony",
     precision: false,
     terms: [
-      "chief creative officer", "VP fashion", "vice president design",
-      "fashion VP", "CCO", "fashion c-suite",
-      "VP of leather goods", "VP leathergoods", "vice president leather goods",
-      "vice president accessories", "VP of handbags",
+      "award show", "award ceremony", "Oscars", "Emmys", "Grammys",
+      "AMAs", "nominated", "attending award", "going to the Oscars",
     ],
   },
 ];
 
-/** Terms that confirm this is an actual job posting — trigger +15 score boost */
-export const JOB_CONFIRMATION_TERMS: string[] = [
-  "hiring", "apply now", "open role", "we are looking for",
-  "job opening", "position available", "join our team", "now hiring",
+/** Terms that signal event outfit shopping intent — trigger +15 score boost */
+export const EVENT_INTENT_TERMS: string[] = [
+  "what to wear", "need a dress", "need an outfit", "outfit ideas",
+  "looking for something to wear", "shopping for", "need to find",
+  "help me find", "what should I wear", "outfit inspo", "styling help",
 ];
 
-/** Luxury/premium brands — trigger +15 score boost */
+/** Luxury/premium brands — trigger +10 score boost */
 export const LUXURY_BRAND_TERMS: string[] = [
-  "LVMH", "Kering", "Hermès", "Chanel", "Dior", "Louis Vuitton",
-  "Gucci", "Saint Laurent", "Balenciaga", "Coach", "Tory Burch",
-  "Michael Kors", "Ralph Lauren", "Prada", "Bottega Veneta",
-  "Burberry", "Valentino", "Versace", "Fendi", "Givenchy",
+  "Chanel", "Dior", "Valentino", "Cartier", "Tiffany", "Van Cleef",
+  "Bulgari", "Gucci", "Prada", "Saint Laurent", "Hermès", "Versace",
+  "Jimmy Choo", "Manolo Blahnik",
 ];
 
 export const NEGATIVE_KEYWORDS: string[] = [
-  "intern", "unpaid", "volunteer", "entry level",
+  "watching at home", "watched on tv", "red carpet recap",
+  "best dressed list", "selling my dress", "throwback", "last year",
+  "already wore", "tbt",
 ];
 
 export const SPAM_PATTERNS: string[] = [
@@ -109,16 +94,23 @@ export const SPAM_PATTERNS: string[] = [
 
 /** NYC terms — score boost only, not a filter */
 export const NYC_BOOST_TERMS: string[] = [
-  "new york", "nyc", "manhattan", "brooklyn", "new york city",
+  "new york", "nyc", "manhattan", "brooklyn", "lincoln center",
+  "the met", "cipriani", "the plaza",
+];
+
+/** Urgency terms — trigger +10 score boost */
+export const URGENCY_TERMS: string[] = [
+  "next week", "this weekend", "next month", "in two weeks",
+  "upcoming", "this saturday", "this friday",
 ];
 
 export const NYC_SCORE_BOOST = 10;
 
 /** Per-classification minimum score thresholds */
 export const CLASSIFICATION_THRESHOLDS: Record<RIDClassification, number> = {
-  "Design & Creative Direction": 20,
-  "Accessories & Leather Goods": 20,
-  "Styling": 20,
-  "Senior Design": 25,
-  "Fashion Executive": 20,
+  "Wedding": 20,
+  "Gala": 20,
+  "Fashion Show": 20,
+  "Movie / Theater Premiere": 20,
+  "Award Ceremony": 20,
 };

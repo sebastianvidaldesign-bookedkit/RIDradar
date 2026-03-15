@@ -3,58 +3,46 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // ─── RSS FEEDS ────────────────────────────────────────────────────────────────
-const RSS_FEEDS: { url: string; name: string }[] = [
-  { url: "https://fashionunited.com/rss/jobs", name: "FashionUnited Jobs" },
-  { url: "https://www.businessoffashion.com/rss/", name: "Business of Fashion" },
-  { url: "https://fashionista.com/.rss/excerpt/", name: "Fashionista" },
-  { url: "https://wwd.com/feed/", name: "WWD" },
-];
+const RSS_FEEDS: { url: string; name: string }[] = [];
 
 // ─── SEARCH QUERIES ───────────────────────────────────────────────────────────
 const SEARCH_QUERIES = [
-  '"fashion design director" job -site:linkedin.com',
-  '"handbag design director" OR "leather goods director" job -site:linkedin.com',
-  '"creative director handbags" OR "creative director leather goods" job -site:linkedin.com',
-  '"VP of leather goods" OR "VP leathergoods" OR "VP of handbags" job -site:linkedin.com',
-  '"senior handbag designer" OR "senior leather goods designer" job -site:linkedin.com',
-  '"leather goods designer" OR "leathergoods designer" job NYC -site:linkedin.com',
-  '"fashion stylist" director position -site:linkedin.com',
-  '"creative director" fashion luxury job -site:linkedin.com',
-  '"fashion design director" NYC job -site:linkedin.com',
-  'site:fashionunited.com "design director" OR "creative director" OR "leather goods"',
-  'site:wwd.com "design director" OR "leather goods" job 2025',
-  'site:businessoffashion.com "design director" OR "creative director" OR "leather goods" job',
+  // Instagram (10 queries)
+  '"what to wear" "wedding" site:instagram.com',
+  '"going to a wedding" "outfit" site:instagram.com',
+  '"attending a gala" site:instagram.com',
+  '"gala outfit" "need" site:instagram.com',
+  '"fashion show" "invited" site:instagram.com',
+  '"fashion week" "going to" site:instagram.com',
+  '"movie premiere" "what to wear" site:instagram.com',
+  '"red carpet" "outfit" "going to" site:instagram.com',
+  '"award show" "need dress" site:instagram.com',
+  '"wedding guest" "what to wear" site:instagram.com',
+  // Threads (5 queries)
+  '"going to a wedding" "what to wear" site:threads.net',
+  '"gala" "outfit" "need" site:threads.net',
+  '"fashion show" "attending" site:threads.net',
+  '"premiere" "outfit" "going to" site:threads.net',
+  '"wedding guest" "outfit ideas" site:threads.net',
+  // TikTok (5 queries)
+  '"wedding guest outfit" site:tiktok.com',
+  '"what to wear to a gala" site:tiktok.com',
+  '"fashion show outfit" site:tiktok.com',
+  '"movie premiere outfit" site:tiktok.com',
+  '"what to wear to award show" site:tiktok.com',
 ];
 
 // ─── REDDIT SUBREDDITS ────────────────────────────────────────────────────────
-const SUBREDDITS = [
-  "fashiondesign",
-  "fashion",
-];
+const SUBREDDITS: string[] = [];
 
 // ─── REDDIT QUERIES ───────────────────────────────────────────────────────────
-const REDDIT_QUERIES = [
-  '"design director" fashion job hiring',
-  '"fashion stylist" job NYC',
-  '"handbag designer" OR "leather goods designer" position',
-  '"creative director" leather goods OR handbags job',
-  '"VP" leather goods OR handbags fashion hiring',
-];
+const REDDIT_QUERIES: string[] = [];
 
 // ─── X / TWITTER QUERIES ──────────────────────────────────────────────────────
-const X_QUERIES = [
-  '"design director" fashion hiring -is:retweet lang:en',
-  '"creative director" fashion job opening -is:retweet lang:en',
-  '"handbag designer" OR "leather goods designer" job -is:retweet lang:en',
-  '"creative director handbags" OR "creative director leather goods" -is:retweet lang:en',
-  '"VP of leather goods" OR "VP leathergoods" OR "VP handbags" hiring -is:retweet lang:en',
-  '"senior leather goods designer" OR "senior handbag designer" job -is:retweet lang:en',
-  '"fashion stylist" job NYC hiring -is:retweet lang:en',
-  '"fashion executive" OR "chief creative officer" fashion hiring -is:retweet lang:en',
-];
+const X_QUERIES: string[] = [];
 
 async function main() {
-  console.log("Seeding Fashion Job Radar database...");
+  console.log("Seeding Event Fashion Radar database...");
 
   // ─── Truncate existing data (FK order: Mention/ReplyDraft before Source) ───
   console.log("Truncating existing data...");
@@ -85,7 +73,7 @@ async function main() {
         type: "search_query",
         value: query,
         name: `web:"${query}"`,
-        pack: "jobs",
+        pack: "events",
         enabled: true,
       },
     });
@@ -113,7 +101,7 @@ async function main() {
         type: "reddit_query",
         value: query,
         name: `reddit:"${query}"`,
-        pack: "jobs",
+        pack: "events",
         enabled: true,
       },
     });
@@ -127,7 +115,7 @@ async function main() {
         type: "x_query",
         value: query,
         name: `x:"${query}"`,
-        pack: "jobs",
+        pack: "events",
         enabled: true,
       },
     });
