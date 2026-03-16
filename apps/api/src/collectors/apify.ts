@@ -27,6 +27,12 @@ const INSTAGRAM_HASHTAGS = [
   "performanceoutfit",
   "touroutfit",
   "outfitinspo",
+  // Actors / actresses — premieres & photoshoots
+  "photoshootoutfit",
+  "redcarpetready",
+  "premierenight",
+  "actressstyle",
+  "setlife",
 ];
 
 const TIKTOK_HASHTAGS = [
@@ -48,6 +54,12 @@ const TIKTOK_HASHTAGS = [
   "performanceoutfit",
   "touroutfit",
   "outfitinspo",
+  // Actors / actresses — premieres & photoshoots
+  "photoshootoutfit",
+  "redcarpetready",
+  "premierenight",
+  "actressstyle",
+  "setlife",
 ];
 
 // Max results per hashtag — 5 hashtags × 4 = 20 results per platform max
