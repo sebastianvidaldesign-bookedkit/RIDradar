@@ -19,7 +19,7 @@ interface ProcessResult {
   drafted_count: number;
 }
 
-async function processMentions(rawMentions: RawMention[]): Promise<ProcessResult> {
+async function processMentions(rawMentions: RawMention[], bypassFilters = false): Promise<ProcessResult> {
   const result: ProcessResult = {
     raw_count: rawMentions.length,
     inserted_count: 0,
@@ -55,14 +55,14 @@ async function processMentions(rawMentions: RawMention[]): Promise<ProcessResult
       // Classify
       const classification = await classify(raw.title, raw.content, raw.sourceName);
 
-      // Skip if not relevant
-      if (!classification.relevant) {
+      // Skip if not relevant (bypass for Apify — store all raw results)
+      if (!bypassFilters && !classification.relevant) {
         result.skipped_irrelevant++;
         continue;
       }
 
-      // Skip if below MIN_STORE_SCORE
-      if (classification.score < minStoreScore) {
+      // Skip if below MIN_STORE_SCORE (bypass for Apify)
+      if (!bypassFilters && classification.score < minStoreScore) {
         result.skipped_low_score++;
         continue;
       }
@@ -169,7 +169,7 @@ export async function runApifyCollect(): Promise<number> {
   logger.info("Starting Apify collection...");
   await syncMaxHistoryDays();
   const rawMentions = await collectAllApify();
-  const result = await processMentions(rawMentions);
+  const result = await processMentions(rawMentions, true); // bypass filters — store all raw results
   logResult("Apify collection", result);
   return result.inserted_count;
 }
