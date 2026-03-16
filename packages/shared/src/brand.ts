@@ -1,5 +1,4 @@
 export type RIDClassification =
-  | "Wedding"
   | "Gala"
   | "Fashion Show"
   | "Movie / Theater Premiere"
@@ -15,17 +14,6 @@ export interface QueryPack {
 }
 
 export const QUERY_PACKS: QueryPack[] = [
-  {
-    id: "wedding",
-    name: "Wedding",
-    classification: "Wedding",
-    precision: false,
-    terms: [
-      "going to a wedding", "attending a wedding", "wedding guest",
-      "bridesmaid", "need wedding guest outfit", "what to wear to a wedding",
-      "maid of honor",
-    ],
-  },
   {
     id: "gala",
     name: "Gala",

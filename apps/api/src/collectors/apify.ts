@@ -10,7 +10,6 @@ function hashId(input: string): string {
 // Event-attendance hashtags to search — keep list short to control cost
 const INSTAGRAM_HASHTAGS = [
   // Event attendance
-  "weddingguest",
   "galaoutfit",
   "fashionweek",
   "moviepremiere",
@@ -67,7 +66,6 @@ const INSTAGRAM_HASHTAGS = [
 
 const TIKTOK_HASHTAGS = [
   // Event attendance
-  "weddingguest",
   "galaoutfit",
   "fashionweek",
   "moviepremiere",
