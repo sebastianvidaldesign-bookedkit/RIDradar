@@ -52,15 +52,8 @@ const urgencyColor = (u: string | null) => {
   return "secondary" as const;
 };
 
-const scoreColor = (s: number) => {
-  if (s >= 85) return "text-emerald-600 font-bold";
-  if (s >= 70) return "text-amber-600 font-semibold";
-  if (s >= 40) return "text-gray-600";
-  return "text-gray-400";
-};
-
 export default function InboxPage() {
-  const [sort, setSort] = useState("score_high");
+  const [sort, setSort] = useState("newest");
   const [intent, setIntent] = useState("all");
   const [classification, setClassification] = useState("all");
   const [page, setPage] = useState(0);
@@ -157,10 +150,8 @@ export default function InboxPage() {
           onChange={(e) => { setSort(e.target.value); setPage(0); }}
           className="w-52"
         >
-          <option value="score_high">Match Score (High)</option>
           <option value="newest">Newest First</option>
           <option value="oldest">Oldest First</option>
-          <option value="score_low">Match Score (Low)</option>
         </Select>
 
         <Select
@@ -224,11 +215,6 @@ export default function InboxPage() {
           <Link key={m.id} href={`/mentions/${m.id}`}>
             <Card className="p-4 transition-colors hover:bg-accent/50 cursor-pointer">
               <div className="flex items-start gap-4">
-                {/* Score */}
-                <div className={`min-w-[3rem] text-center text-2xl ${scoreColor(m.score)}`}>
-                  {m.score}
-                </div>
-
                 {/* Content */}
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-1">
