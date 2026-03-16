@@ -96,7 +96,6 @@ export const NYC_SCORE_BOOST = 10;
 
 /** Per-classification minimum score thresholds */
 export const CLASSIFICATION_THRESHOLDS: Record<RIDClassification, number> = {
-  "Wedding": 20,
   "Gala": 20,
   "Fashion Show": 20,
   "Movie / Theater Premiere": 20,
