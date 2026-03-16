@@ -9,19 +9,57 @@ function hashId(input: string): string {
 
 // Event-attendance hashtags to search — keep list short to control cost
 const INSTAGRAM_HASHTAGS = [
+  // Event attendance
   "weddingguest",
   "galaoutfit",
   "fashionweek",
   "moviepremiere",
   "awardsseason",
+  // Brand aesthetic + NYC
+  "rocknrollfashion",
+  "punkfashion",
+  "80sfashion",
+  "vintagenyc",
+  "nycfashion",
+  // Musician / artist stage signals
+  "stageoutfit",
+  "concertoutfit",
+  "performanceoutfit",
+  "touroutfit",
+  "outfitinspo",
+  // Actors / actresses — premieres & photoshoots
+  "photoshootoutfit",
+  "redcarpetready",
+  "premierenight",
+  "actressstyle",
+  "setlife",
 ];
 
 const TIKTOK_HASHTAGS = [
+  // Event attendance
   "weddingguest",
   "galaoutfit",
   "fashionweek",
   "moviepremiere",
   "awardsseason",
+  // Brand aesthetic + NYC
+  "rocknrollfashion",
+  "punkfashion",
+  "80sfashion",
+  "vintagenyc",
+  "nycfashion",
+  // Musician / artist stage signals
+  "stageoutfit",
+  "concertoutfit",
+  "performanceoutfit",
+  "touroutfit",
+  "outfitinspo",
+  // Actors / actresses — premieres & photoshoots
+  "photoshootoutfit",
+  "redcarpetready",
+  "premierenight",
+  "actressstyle",
+  "setlife",
 ];
 
 // Max results per hashtag — 5 hashtags × 4 = 20 results per platform max
