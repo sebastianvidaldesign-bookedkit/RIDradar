@@ -33,6 +33,36 @@ const INSTAGRAM_HASHTAGS = [
   "premierenight",
   "actressstyle",
   "setlife",
+  // Luxury lifestyle — wealth signals
+  "luxuryfashion",
+  "luxurylifestyle",
+  "luxuryevent",
+  "highfashion",
+  // Charity & gala circuit
+  "benefitgala",
+  "galadinner",
+  "blacktieoutfit",
+  "charitygala",
+  // Arts & culture — wealthy NYC crowd
+  "openingnightoutfit",
+  "artgalleryopening",
+  "operanight",
+  // Social scene / old money
+  "socialitestyle",
+  "hamptons",
+  "polooutfit",
+  // Luxury fashion-adjacent
+  "editorialfashion",
+  "hautecouture",
+  "designeroutfit",
+  // R13 / dark luxury denim community
+  "luxurydenim",
+  "designerdenim",
+  "darkfashion",
+  "gothfashion",
+  "edgyfashion",
+  "luxurystreetwear",
+  "downtownnyc",
 ];
 
 const TIKTOK_HASHTAGS = [
@@ -60,9 +90,39 @@ const TIKTOK_HASHTAGS = [
   "premierenight",
   "actressstyle",
   "setlife",
+  // Luxury lifestyle — wealth signals
+  "luxuryfashion",
+  "luxurylifestyle",
+  "luxuryevent",
+  "highfashion",
+  // Charity & gala circuit
+  "benefitgala",
+  "galadinner",
+  "blacktieoutfit",
+  "charitygala",
+  // Arts & culture — wealthy NYC crowd
+  "openingnightoutfit",
+  "artgalleryopening",
+  "operanight",
+  // Social scene / old money
+  "socialitestyle",
+  "hamptons",
+  "polooutfit",
+  // Luxury fashion-adjacent
+  "editorialfashion",
+  "hautecouture",
+  "designeroutfit",
+  // R13 / dark luxury denim community
+  "luxurydenim",
+  "designerdenim",
+  "darkfashion",
+  "gothfashion",
+  "edgyfashion",
+  "luxurystreetwear",
+  "downtownnyc",
 ];
 
-// Max results per hashtag — 5 hashtags × 4 = 20 results per platform max
+// Max results per hashtag — 44 hashtags × 4 = 176 results per platform max
 const MAX_PER_HASHTAG = 4;
 
 async function runActor(
