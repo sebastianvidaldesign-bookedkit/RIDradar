@@ -99,7 +99,7 @@ async function scrapeInstagram(): Promise<RawMention[]> {
     logger.info(`Apify Instagram scraping: #${hashtag}`);
     try {
       const items = await runActor("apify/instagram-scraper", {
-        hashtags: [hashtag],
+        directUrls: [`https://www.instagram.com/explore/tags/${hashtag}/`],
         resultsType: "posts",
         resultsLimit: MAX_PER_HASHTAG,
         addParentData: false,
