@@ -79,7 +79,7 @@ async function processMentions(rawMentions: RawMention[], bypassFilters = false)
           author: raw.author,
           publishedAt: raw.publishedAt,
           raw: (raw.raw as any) || undefined,
-          score: bypassFilters ? Math.max(classification.score, 50) : classification.score,
+          score: bypassFilters ? 0 : classification.score,
           relevant: bypassFilters ? true : classification.relevant,
           intent: classification.intent,
           audience: classification.audience,
