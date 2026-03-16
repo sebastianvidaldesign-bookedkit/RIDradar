@@ -55,6 +55,14 @@ const INSTAGRAM_HASHTAGS = [
   "editorialfashion",
   "hautecouture",
   "designeroutfit",
+  // R13 / dark luxury denim community
+  "luxurydenim",
+  "designerdenim",
+  "darkfashion",
+  "gothfashion",
+  "edgyfashion",
+  "luxurystreetwear",
+  "downtownnyc",
 ];
 
 const TIKTOK_HASHTAGS = [
@@ -104,9 +112,17 @@ const TIKTOK_HASHTAGS = [
   "editorialfashion",
   "hautecouture",
   "designeroutfit",
+  // R13 / dark luxury denim community
+  "luxurydenim",
+  "designerdenim",
+  "darkfashion",
+  "gothfashion",
+  "edgyfashion",
+  "luxurystreetwear",
+  "downtownnyc",
 ];
 
-// Max results per hashtag — 37 hashtags × 4 = 148 results per platform max
+// Max results per hashtag — 44 hashtags × 4 = 176 results per platform max
 const MAX_PER_HASHTAG = 4;
 
 async function runActor(
