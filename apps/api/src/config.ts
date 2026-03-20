@@ -33,8 +33,10 @@ export const config = {
   llmBaseUrl: process.env.LLM_BASE_URL || "https://api.openai.com/v1",
   llmApiKey: process.env.LLM_API_KEY || "",
   llmModel: process.env.LLM_MODEL || "gpt-4o-mini",
+  anthropicApiKey: process.env.ANTHROPIC_API_KEY || "",
+  anthropicModel: process.env.ANTHROPIC_MODEL || "claude-haiku-4-5-20251001",
   get llmEnabled() {
-    return Boolean(this.llmApiKey);
+    return Boolean(this.llmApiKey) || Boolean(this.anthropicApiKey);
   },
 
   // Search APIs

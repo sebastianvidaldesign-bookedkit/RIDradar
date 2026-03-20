@@ -3,6 +3,7 @@ import { config } from "../config";
 import { logger } from "../lib/logger";
 import { runRedditCollect, runRssCollect, runSearchCollect, runXCollect, runApifyCollect } from "./collect";
 import { runDigest } from "./digest";
+import { runReclassify } from "./reclassify";
 import type { JobsStatusMap } from "shared";
 
 // In-memory job status tracking
@@ -13,6 +14,7 @@ export const jobStatus: JobsStatusMap = {
   x: { running: false, lastRun: null, lastError: null, itemsFound: 0 },
   digest: { running: false, lastRun: null, lastError: null, itemsFound: 0 },
   apify: { running: false, lastRun: null, lastError: null, itemsFound: 0 },
+  reclassify: { running: false, lastRun: null, lastError: null, itemsFound: 0 },
 };
 
 async function safeRun(
@@ -60,6 +62,9 @@ export function triggerJob(jobName: string): void {
       break;
     case "apify":
       safeRun("apify", runApifyCollect);
+      break;
+    case "reclassify":
+      safeRun("reclassify", runReclassify);
       break;
     case "all":
       safeRun("reddit", runRedditCollect);

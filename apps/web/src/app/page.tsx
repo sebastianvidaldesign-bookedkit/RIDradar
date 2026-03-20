@@ -127,6 +127,9 @@ export default function InboxPage() {
           <Button size="sm" disabled={!!runningJob} onClick={() => runJob("apify")}>
             {runningJob === "apify" ? "Running..." : "Run Now"}
           </Button>
+          <Button size="sm" variant="outline" disabled={!!runningJob} onClick={() => runJob("reclassify")}>
+            {runningJob === "reclassify" ? "Reclassifying..." : "Reclassify DB"}
+          </Button>
         </div>
       </div>
 
