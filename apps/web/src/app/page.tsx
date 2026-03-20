@@ -52,8 +52,14 @@ const urgencyColor = (u: string | null) => {
   return "secondary" as const;
 };
 
+const scoreColor = (s: number) => {
+  if (s >= 85) return "text-emerald-600";
+  if (s >= 70) return "text-amber-600";
+  return "text-gray-400";
+};
+
 export default function InboxPage() {
-  const [sort, setSort] = useState("newest");
+  const [sort, setSort] = useState("score_high");
   const [intent, setIntent] = useState("all");
   const [classification, setClassification] = useState("all");
   const [page, setPage] = useState(0);
@@ -153,6 +159,8 @@ export default function InboxPage() {
           onChange={(e) => { setSort(e.target.value); setPage(0); }}
           className="w-52"
         >
+          <option value="score_high">Best Score First</option>
+          <option value="score_low">Lowest Score First</option>
           <option value="newest">Newest First</option>
           <option value="oldest">Oldest First</option>
         </Select>
@@ -253,7 +261,7 @@ export default function InboxPage() {
                   )}
                 </div>
 
-                {/* Date + Archive */}
+                {/* Score + Date + Archive */}
                 <div className="flex flex-col items-end gap-2 text-xs text-muted-foreground whitespace-nowrap">
                   <Button
                     size="sm"
@@ -263,6 +271,7 @@ export default function InboxPage() {
                   >
                     Archive
                   </Button>
+                  <span className={`font-bold text-sm ${scoreColor(m.score)}`}>{m.score}/100</span>
                   <span>{new Date(m.fetchedAt).toLocaleDateString()}</span>
                   {m.author && <span>by {m.author}</span>}
                 </div>
