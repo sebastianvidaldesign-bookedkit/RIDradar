@@ -109,15 +109,15 @@ export function startScheduler(): void {
     safeRun("x", runXCollect);
   });
 
-  // Daily Apify collection at 07:00 ET — Instagram + TikTok hashtag scrape
-  cron.schedule(
-    "0 7 * * *",
-    () => {
-      logger.info("Cron: Daily Apify collection triggered (07:00 ET)");
-      safeRun("apify", runApifyCollect);
-    },
-    { timezone: "America/New_York" }
-  );
+  // Daily Apify collection — disabled to stop credit drain
+  // cron.schedule(
+  //   "0 7 * * *",
+  //   () => {
+  //     logger.info("Cron: Daily Apify collection triggered (07:00 ET)");
+  //     safeRun("apify", runApifyCollect);
+  //   },
+  //   { timezone: "America/New_York" }
+  // );
 
   // Daily digest — disabled until email is configured
   // cron.schedule(
@@ -133,6 +133,6 @@ export function startScheduler(): void {
   logger.info(`  Reddit + RSS: every ${config.redditIntervalMinutes} min`);
   logger.info(`  Web search: every ${config.searchIntervalHours} hours`);
   logger.info(`  X (Twitter): every ${config.searchIntervalHours} hours`);
-  logger.info(`  Apify (Instagram + TikTok): daily at 07:00 ET`);
+  logger.info(`  Apify (Instagram + TikTok): disabled`);
   logger.info(`  Daily digest: disabled`);
 }
